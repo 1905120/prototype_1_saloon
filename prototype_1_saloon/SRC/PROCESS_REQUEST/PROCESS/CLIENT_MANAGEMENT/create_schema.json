@@ -1,6 +1,6 @@
 {
     "action" : "CREATE-CLIENT",
-    "client": {
+    "barber_shop": {
         "id": null,
         "name": null,
         "owner": null,
