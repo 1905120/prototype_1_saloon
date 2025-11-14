@@ -1,7 +1,7 @@
 from .HelperFunctions import extract_phn_number, get_mapped_fields, read_record
-from .STORAGE_MANAGEMENT.Online_transaction.StoredData.CLIENT.ManageClient import writeout_data
-from .CLIENT_MANAGEMENT.Client import load_record, validate_fields, merge_record, update_system_fields
-from .SharedData import response_queue
+from .STORAGE_MANAGEMENT.Online_transaction.StoredData.CLIENT.ManageClient import writeout_data, delete_data
+from .CLIENT_MANAGEMENT.Client import load_record, validate_fields, update_system_fields, current_sys_fields
+from . import SharedData
 
 class manage_customer_appoinment:
     def __init__(self):
@@ -35,20 +35,22 @@ class manage_client_data:
         self.res = ""
         self.thread_name = None
         self.phone_number = None
-        response_queue["{}#{}".format(self.seq_key, self.session_key)] = []
+        SharedData.response_queue["{}#{}".format(self.seq_key, self.session_key)] = []
         self.test_mode = True
         self.request_data = RequestData
         return
     
     def manage_res(self, val):
-        response_queue["{}#{}".format(self.seq_key, self.session_key)].append(self.res)
+        SharedData.response_queue["{}#{}".format(self.seq_key, self.session_key)].append(self.res)
         return self.res
 
     def create_client(self, RequestData, thread_name = None):
         self.thread_name = thread_name
         self.phone_number = extract_phn_number(RequestData)
-        RequestData, old_session_number = update_system_fields(RequestData, self.session_key, self.seq_key)
-        self.res = writeout_data(self.seq_key, self.session_key, self.phone_number, self.request_data, self.test_mode, self.current_action, old_session_number)
+        RequestData["barber_shop"]["versionNo"] = 0
+        RequestData["barber_shop"]["id"] = self.seq_key
+        RequestData, old_session_number = update_system_fields(RequestData, None, self.session_key)
+        self.res = writeout_data(self.seq_key, self.session_key, self.phone_number, self.request_data, self.current_action)
         return self.manage_res(self.res)
     
     def delete_client(self, RequestData):
@@ -62,21 +64,25 @@ class manage_client_data:
         #validate new record
         schema_file = read_record("create_schema")
         all_keys = get_mapped_fields(schema_file)
-        missing_fields = validate_fields(RequestData, all_keys)
+        missing_fields = validate_fields(RequestData, all_keys["fields"])
 
         #load current record
-        current_record = load_record("CURRENT", self.phone_number)
-
+        client_seq_id, session_id = current_sys_fields(self.phone_number, SharedData.client_meta_data)
+        current_record, err_msg  = load_record("CURRENT", self.phone_number, client_seq_id, session_id)
         #load new record
-        combined_paths = {}
-        new_record = load_record("CURRENT", self.phone_number, request_data=RequestData, current_data=current_record, combined_paths=all_keys)
+        new_record, err_msg      = load_record("NEW", self.phone_number, None, None, RequestData, current_record, all_keys)
+        #update sysfields for new record
+        new_record               = update_system_fields(new_record, session_id, self.session_key)
 
         #move current record to history data
+        move_res = writeout_data(client_seq_id, session_id, self.phone_number, current_record, self.current_action)
 
         #delete current data
+        del_res = delete_data(client_seq_id, session_id, self.phone_number)
 
         #move new record to current data
-        
+        self.res = writeout_data(client_seq_id, self.session_key, self.phone_number, new_record, "CREATE-CLIENT")
+
         return self.manage_res(self.res)
     
     def store_data(self):
