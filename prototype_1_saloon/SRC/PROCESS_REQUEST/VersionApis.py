@@ -1,5 +1,4 @@
-from .PROCESS.HelperFunctions import get_actual_action, set_routers
-from . import VersionCommon
+from .PROCESS.HelperFunctions import get_actual_action
 from .PROCESS.SharedData import host
 
 async def v1_api(App, client, request):

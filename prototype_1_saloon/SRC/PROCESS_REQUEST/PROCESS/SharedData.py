@@ -11,7 +11,7 @@ global client_meta_data
 test_mode = True
 task_queue = queue.Queue()
 counter_lock = threading.Lock()
-response_queue = {}
+err_queue = {}
 client_meta_data = {}
 
 task_counter = 0
