@@ -1,0 +1,37 @@
+{
+    "action" : "CREATE-CLIENT",
+    "client": {
+        "id": null,
+        "name": null,
+        "owner": null,
+        "workers":[],
+        "address": {
+            "street": null,
+            "city": null,
+            "state": null,
+            "zip_code": null,
+            "landmark": null
+        },
+        "contact": {
+            "phone": null,
+            "email": null,
+            "whatsapp": null
+        },
+        "services": [],
+        "opening_hours": {
+            "monday": null,
+            "tuesday": null,
+            "wednesday": null,
+            "thursday": null,
+            "friday": null,
+            "saturday": null,
+            "sunday": null
+        },
+        "facilities": [],
+        "social_media": {
+            "facebook": null,
+            "instagram": null
+        },
+        "notes": null
+    }
+}

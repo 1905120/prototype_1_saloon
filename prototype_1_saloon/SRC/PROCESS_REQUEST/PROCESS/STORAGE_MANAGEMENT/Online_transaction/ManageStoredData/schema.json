@@ -1,0 +1,60 @@
+{
+    "fileName":"",
+    "session": {
+        "sessionId": ""
+    },
+    "client": {
+        "client": {
+            "clientId": "",
+            "clientDet": {
+                "clientName": "",
+                "location": "",
+                "overallRating": ""
+            }
+        },
+        "worker": {
+            "workerId": "",
+            "workerDet": {
+                "worker": "",
+                "experience": ""
+            }
+        }
+    },
+    "customer": {
+        "custId": "",
+        "custDet": {
+            "name": "",
+            "age": ""
+        },
+        "transaction": {
+            "status": ""
+        },
+        "slot": {
+            "status": "",
+            "modifiedSlot": false,
+            "slotDet": {
+                "currentSlot": "",
+                "oldSlot": ""
+            }
+        }
+    },
+    "relationShip": {
+        "historyId": ""
+    },
+    "audit":{
+        "approve":"",
+        "currNo":"",
+        "transaction":{
+            "transactionStatus":"",
+            "transactionId":"",
+            "customerSubmmission":{
+                "paymentTransId":"",
+                "paymentStatus":"",
+                "acceptanceId":""
+            },
+            "clientSubmmission":{
+                "acceptanceId":""
+            }
+        }
+    }
+}
