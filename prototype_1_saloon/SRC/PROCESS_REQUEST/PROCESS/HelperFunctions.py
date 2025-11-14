@@ -14,20 +14,18 @@ async def FindResponse(seq_key, session_key, all_response):
         return "", all_response[search_key]
     return None, KeyValue
 
-async def SendResponse(Err, Response, seq_key, session_key, thread_name, Queue, phone_number):
+async def SendResponse(response, Err, seq_key, session_key, thread_name, Queue, phone_number):
     if "clients" in SharedData.client_meta_data:
         SharedData.client_meta_data["clients"][str(phone_number)] = {"client_id" : seq_key, "session_id" : session_key}
     else:
         SharedData.client_meta_data["clients"] = {}
         SharedData.client_meta_data["clients"][str(phone_number)] = {"client_id" : seq_key, "session_id" : session_key}
 
-    temp = Queue.pop("{0}#{1}".format(seq_key, session_key))
-
     if Err:
         return json.dumps({
             "status" : 400,
             "errMessage":Err,
-            "response":Response,
+            "response":response,
             "seq_key" : seq_key,
             "session_id" : session_key,
             "thread_name" : thread_name
@@ -36,7 +34,7 @@ async def SendResponse(Err, Response, seq_key, session_key, thread_name, Queue, 
         return json.dumps({
             "status" : 200,
             "errMessage":None,
-            "response":Response,
+            "response":response,
             "seq_key" : seq_key,
             "session_id" : session_key,
             "thread_name" : thread_name
@@ -98,12 +96,16 @@ def find_key_paths(data, target_key, prefix=""):
 
 def extract_phn_number(data):
     phone = None
-    path = find_key_paths(data, "phone")
+    try:
+        path = find_key_paths(data, "phone")
+    except:
+        err_msg = "phone number mandatory"
+        return phone, err_msg
     prev_dict = data
     for idx, each_path in enumerate(path.split(".")):
         if each_path:
             prev_dict = prev_dict[each_path]
-    return prev_dict
+    return prev_dict, None
 
 async def ValidateFields(Action, schema, RequestData, LoadedData):
     with (schema, "r") as FilePtr:
@@ -145,7 +147,7 @@ def LoadData(ReqData):
 
 async def send_major_res(res):
     if res:
-        res_data = json.loads(res)
+        res_data = res.json()
     else:
         res_data = {}
     if "errMessage" in res_data:
@@ -155,7 +157,7 @@ async def send_major_res(res):
             status = 200
     else:
         status = 200
-    return JSONResponse(status_code = status, content = res_data)
+    return JSONResponse(status_code = status, content = json.loads(json.dumps(res_data, indent=4)))
 
 async def create_threads(max_parallel_requests, worker, worker_threads):
     if os.path.exists("{0}/STORAGE_MANAGEMENT/Online_transaction/StoredData/CLIENT/meta-data/client_meta_data.json".format(Path(__file__).parent)):

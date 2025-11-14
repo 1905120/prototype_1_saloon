@@ -11,7 +11,7 @@ from PROCESS_REQUEST.PROCESS.HelperFunctions import set_routers
 from PROCESS_REQUEST.VersionCommon import list_of_child_router
 
 shutdown_event = threading.Event()
-client = httpx.AsyncClient()
+client = httpx.AsyncClient(timeout=30)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     worker_threads = await create_threads(max_parallel_requests, worker, [])
@@ -24,7 +24,7 @@ App = FastAPI(lifespan=lifespan)
 async def ParentRequestHandler(request:Request):
     V1_JsonRequest = await request.json()
     v1_response = await v1_api(App, client, V1_JsonRequest)
-    return await send_major_res(v1_response.json())
+    return await send_major_res(v1_response)
 
 set_routers(App, list_of_child_router)
 
