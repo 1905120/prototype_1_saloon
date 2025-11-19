@@ -1,0 +1,14 @@
+{
+  "business": {
+    "salon": {
+      "hair-cutting": "op_001",
+      "hair-coloring": "op_002",
+      "hair-styling": "op_003",
+      "facial-treatment": "op_004",
+      "manicure": "op_005",
+      "pedicure": "op_006",
+      "massage-therapy": "op_007",
+      "waxing": "op_008"
+    }
+  }
+}

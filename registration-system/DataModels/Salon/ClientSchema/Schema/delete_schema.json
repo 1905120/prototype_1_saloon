@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client Delete",
+  "description": "Schema for deleting a client object",
+  "type": "object",
+  "properties": {
+    "mobile": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Mobile number to identify client for deletion"
+    },
+    "action": {
+      "type": "string",
+      "description": "Action to delete the record",
+      "enum": ["DELETE-CLIENT"]
+    },
+    "business": {
+      "type": ["string", "null"],
+      "description": "Business name or category (optional for delete)"
+    }
+  },
+  "required": ["mobile", "action"],
+  "additionalProperties": false
+}

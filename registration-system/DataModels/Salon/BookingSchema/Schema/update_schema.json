@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Booking Update",
+  "description": "Common schema for updating booking records",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "Action that modified the record",
+      "enum": ["UPDATE-BOOKING"]
+    },
+    "updatedFields": {
+      "type": "object",
+      "description": "Fields that are being updated with their new values",
+      "properties": {
+        "bookingStatus": {
+          "type": "string",
+          "enum": ["PENDING", "CONFIRMED", "REJECTED", "COMPLETED", "CANCELLED"]
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["PAID", "UNPAID"]
+        },
+        "approvalStatus": {
+          "type": ["string", "null"],
+          "enum": ["PENDING", "APPROVED", "REJECTED", null]
+        },
+        "notificationStatus": {
+          "type": "string",
+          "enum": ["SENT", "READ", "UNREAD"]
+        },
+        "slotTime": {
+          "type": "string",
+          "description": "Updated slot time in HH:MM format"
+        },
+        "bookingDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Updated appointment date"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    }
+  },
+  "required": ["action", "updatedFields"],
+  "additionalProperties": false
+}

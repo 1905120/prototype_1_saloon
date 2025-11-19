@@ -1,0 +1,3 @@
+"""
+Salon business module
+"""

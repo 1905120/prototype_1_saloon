@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client Booking",
+  "description": "Schema for salon owner's view of a booking",
+  "type": "object",
+  "properties": {
+    "bookingId": {
+      "type": "integer",
+      "description": "System generated ID, reference to the booking"
+    },
+    "customerPhone": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Customer identifier"
+    },
+    "customerName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Customer name"
+    },
+    "customerLocation": {
+      "type": ["string", "null"],
+      "description": "Customer's location for reference"
+    },
+    "slotTime": {
+      "type": "string",
+      "description": "Booked slot time in HH:MM format"
+    },
+    "bookingDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of appointment"
+    },
+    "bookingStatus": {
+      "type": "string",
+      "enum": ["PENDING", "CONFIRMED", "REJECTED", "COMPLETED", "CANCELLED"],
+      "description": "Current status of the booking"
+    },
+    "paymentMethod": {
+      "type": "string",
+      "enum": ["ONLINE", "CASH"],
+      "description": "Payment method chosen by customer"
+    },
+    "paymentStatus": {
+      "type": "string",
+      "enum": ["PAID", "UNPAID"],
+      "description": "Payment status"
+    },
+    "requiresApproval": {
+      "type": "boolean",
+      "description": "Whether this booking requires salon owner approval",
+      "default": false
+    },
+    "approvalStatus": {
+      "type": ["string", "null"],
+      "enum": ["PENDING", "APPROVED", "REJECTED", null],
+      "description": "Salon owner's approval decision"
+    },
+    "notificationStatus": {
+      "type": "string",
+      "enum": ["SENT", "READ", "UNREAD"],
+      "description": "Notification status for salon owner",
+      "default": "UNREAD"
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version number, starts at 1",
+      "default": 1,
+      "minimum": 1
+    },
+    "action": {
+      "type": "string",
+      "description": "Action that created/modified the record",
+      "enum": ["CREATE-BOOKING", "UPDATE-BOOKING", "DELETE-BOOKING"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Booking creation timestamp"
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "updatedFields": {
+      "type": ["array", "null"],
+      "description": "Array of field IDs that were updated",
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "required": ["bookingId", "customerPhone", "customerName", "slotTime", "bookingDate", "bookingStatus", "paymentMethod", "paymentStatus", "notificationStatus", "version", "action", "createdAt"],
+  "additionalProperties": false
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Salon Metadata",
+  "description": "Tracks phone number to entity type mappings and global salon statistics",
+  "type": "object",
+  "properties": {
+    "phone_mappings": {
+      "type": "object",
+      "description": "Maps phone numbers to entity types (customer or client)",
+      "patternProperties": {
+        "^[0-9]{10,15}$": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "client"
+          ],
+          "description": "Entity type for the phone number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Global salon metadata",
+      "properties": {
+        "business": {
+          "type": "string",
+          "description": "Business identifier (e.g., 'salon')",
+          "minLength": 1
+        },
+        "total_customers": {
+          "type": "integer",
+          "description": "Total number of customers",
+          "minimum": 0
+        },
+        "total_clients": {
+          "type": "integer",
+          "description": "Total number of clients",
+          "minimum": 0
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp in ISO 8601 format"
+        },
+        "version": {
+          "type": "integer",
+          "description": "Schema version",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "business",
+        "total_customers",
+        "total_clients",
+        "last_updated",
+        "version"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "phone_mappings",
+    "metadata"
+  ],
+  "additionalProperties": false
+}

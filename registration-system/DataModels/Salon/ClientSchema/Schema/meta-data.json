@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client Metadata",
+  "description": "Tracks client records with phone_number as key and client_id in seq#phone format",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Global metadata",
+      "properties": {
+        "total_clients": {
+          "type": "integer",
+          "description": "Total number of clients",
+          "default": 0
+        },
+        "last_updated": {
+          "type": "string",
+          "description": "Last update timestamp"
+        },
+        "version": {
+          "type": "integer",
+          "description": "Schema version",
+          "default": 1
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^[0-9]{10,15}$": {
+      "type": "object",
+      "description": "Phone number as key",
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "description": "Client ID in format seq#phone_number",
+          "pattern": "^[0-9]+#[0-9]{10,15}$"
+        },
+        "sessions": {
+          "type": "object",
+          "description": "Version-to-session mapping",
+          "patternProperties": {
+            "^[0-9]+$": {
+              "type": "string",
+              "description": "Version number mapped to session ID"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["client_id", "sessions"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
