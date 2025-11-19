@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Customer",
+  "description": "Schema for a customer object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "System generated ID"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "email": {
+      "type": ["string", "null"],
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Used as primary key"
+    },
+    "dateOfBirth": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "address": {
+      "type": ["object", "null"],
+      "properties": {
+        "street": {"type": "string"},
+        "city": {"type": "string"},
+        "state": {"type": "string"},
+        "country": {"type": "string"},
+        "postalCode": {"type": "string"}
+      }
+    },
+    "location": {
+      "type": ["object", "null"],
+      "properties": {
+        "latitude": {"type": "number"},
+        "longitude": {"type": "number"}
+      },
+      "required": ["latitude", "longitude"]
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version number, starts at 1",
+      "default": 1,
+      "minimum": 1
+    },
+    "action": {
+      "type": "string",
+      "description": "Action that created/modified the record",
+      "enum": ["CREATE-CUSTOMER", "UPDATE-CUSTOMER", "DELETE-CUSTOMER"]
+    },
+    "approvalStatus": {
+      "type": ["string", "null"],
+      "description": "Approval status of the customer record",
+      "enum": ["PENDING", "APPROVED", "MISSING-MANDATORY-FIELDS", null]
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp of last update"
+    },
+    "updatedFields": {
+      "type": ["array", "null"],
+      "description": "Array of field IDs that were updated",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "registeredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "System generated timestamp"
+    },
+    "business": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Business name or category"
+    },
+    "service_type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Business name or category"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Business name or category"
+    }
+  },
+  "required": ["name", "phone", "business", "service_type"],
+  "additionalProperties": false
+}

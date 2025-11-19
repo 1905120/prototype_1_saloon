@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Customer Delete",
+  "description": "Schema for deleting a customer object",
+  "type": "object",
+  "properties": {
+    "phone": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Phone number to identify customer for deletion"
+    },
+    "action": {
+      "type": "string",
+      "description": "Action to delete the record",
+      "enum": ["DELETE-CUSTOMER"]
+    },
+    "business": {
+      "type": ["string", "null"],
+      "description": "Business name or category (optional for delete)"
+    }
+  },
+  "required": ["phone", "action"],
+  "additionalProperties": false
+}

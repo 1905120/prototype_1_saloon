@@ -1,0 +1,3 @@
+"""
+Appointment management module
+"""

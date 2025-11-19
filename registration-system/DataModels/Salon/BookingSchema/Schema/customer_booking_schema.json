@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Customer Booking",
+  "description": "Schema for a customer booking ticket",
+  "type": "object",
+  "properties": {
+    "bookingId": {
+      "type": "integer",
+      "description": "System generated ID"
+    },
+    "customerPhone": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Customer identifier"
+    },
+    "customerName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Customer name for reference"
+    },
+    "salonMobile": {
+      "type": "string",
+      "pattern": "^[0-9]{10,15}$",
+      "description": "Salon/client identifier"
+    },
+    "salonName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Salon name"
+    },
+    "salonAddress": {
+      "type": "string",
+      "description": "Full salon address"
+    },
+    "salonLocation": {
+      "type": "string",
+      "format": "uri",
+      "description": "Google Maps link to salon location"
+    },
+    "slotTime": {
+      "type": "string",
+      "description": "Booked slot time in HH:MM format"
+    },
+    "bookingDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of appointment"
+    },
+    "bookingStatus": {
+      "type": "string",
+      "enum": ["PENDING", "CONFIRMED", "REJECTED", "COMPLETED", "CANCELLED"],
+      "description": "Current status of the booking"
+    },
+    "paymentMethod": {
+      "type": "string",
+      "enum": ["ONLINE", "CASH"],
+      "description": "Payment method chosen"
+    },
+    "paymentStatus": {
+      "type": "string",
+      "enum": ["PAID", "UNPAID"],
+      "description": "Payment status"
+    },
+    "requiresApproval": {
+      "type": "boolean",
+      "description": "Whether this booking requires salon owner approval",
+      "default": false
+    },
+    "approvalStatus": {
+      "type": ["string", "null"],
+      "enum": ["PENDING", "APPROVED", "REJECTED", null],
+      "description": "Approval status if requiresApproval is true"
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version number, starts at 1",
+      "default": 1,
+      "minimum": 1
+    },
+    "action": {
+      "type": "string",
+      "description": "Action that created/modified the record",
+      "enum": ["CREATE-BOOKING", "UPDATE-BOOKING", "DELETE-BOOKING"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Booking creation timestamp"
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "updatedFields": {
+      "type": ["array", "null"],
+      "description": "Array of field IDs that were updated",
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "required": ["customerPhone", "customerName", "salonMobile", "salonName", "salonAddress", "salonLocation", "slotTime", "bookingDate", "bookingStatus", "paymentMethod", "paymentStatus", "version", "action", "createdAt"],
+  "additionalProperties": false
+}

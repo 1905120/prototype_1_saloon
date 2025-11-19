@@ -1,0 +1,6 @@
+{
+  "action": "create-customer",
+  "phone": "9876543258",
+  "name": "Customer 58",
+  "business": "salon"
+}

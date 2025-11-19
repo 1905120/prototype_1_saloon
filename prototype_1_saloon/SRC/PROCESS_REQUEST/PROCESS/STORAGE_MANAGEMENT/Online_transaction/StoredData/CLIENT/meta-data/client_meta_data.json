@@ -1,9 +1,0 @@
-{
-    "clients": {
-        "+91-9876543210": {
-            "client_id": 1,
-            "session_id": "508cb86a-d794-4659-a4ac-f78143848673"
-        }
-    },
-    "last_seq_key": 1
-}
