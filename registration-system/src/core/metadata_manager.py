@@ -271,6 +271,7 @@ class MetadataManager:
         Args:
             phone: Phone number
         """
+        return
         metadata = self._read_all()
         phone_mappings = metadata.get("phone_mappings", {})
         

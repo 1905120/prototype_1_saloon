@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Client Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
+    
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="header">
+                <h1>Salon Registration</h1>
+                <p id="stepTitle">Step 1 of 5</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <form id="registrationForm" class="registration-form">
+                <!-- Step 1: Owner Information -->
+                <div class="form-step active" id="step-1">
+                    <fieldset class="form-section">
+                        <legend>Owner Information</legend>
+                        
+                        <div class="form-group">
+                            <label for="ownerName">Owner Name *</label>
+                            <input type="text" id="ownerName" name="ownerName" placeholder="Enter your full name">
+                            <span class="error-message" id="ownerName-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number *</label>
+                            <input type="tel" id="mobile" name="mobile" placeholder="10-15 digits" pattern="^[0-9]{10,15}$">
+                            <span class="error-message" id="mobile-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com">
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ownerAddress">Owner Address</label>
+                            <textarea id="ownerAddress" name="ownerAddress" placeholder="Enter your residential address" rows="3"></textarea>
+                            <span class="error-message" id="ownerAddress-error"></span>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Step 2: Salon Information -->
+                <div class="form-step" id="step-2">
+                    <fieldset class="form-section">
+                        <legend>Salon Information</legend>
+                        
+                        <div class="form-group">
+                            <label for="salonName">Salon Name *</label>
+                            <input type="text" id="salonName" name="salonName" placeholder="Enter salon name">
+                            <span class="error-message" id="salonName-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salonAddress">Salon Address *</label>
+                            <textarea id="salonAddress" name="salonAddress" placeholder="Enter salon address" rows="3"></textarea>
+                            <span class="error-message" id="salonAddress-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serviceType">Service Type *</label>
+                            <select id="serviceType" name="serviceType">
+                                <option value="">Select service type</option>
+                                <option value="Salon">Salon</option>
+                                <option value="Beauty">Beauty</option>
+                                <option value="Hair">Hair</option>
+                                <option value="Unisex">Unisex</option>
+                                <option value="Spa">Spa</option>
+                                <option value="Combined">Combined</option>
+                            </select>
+                            <span class="error-message" id="serviceType-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="business">Business Category *</label>
+                            <input type="text" id="business" name="business" placeholder="e.g., Salon, Beauty Center">
+                            <span class="error-message" id="business-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="licence">Business Licence Number</label>
+                            <input type="text" id="licence" name="licence" placeholder="Enter licence number">
+                            <span class="error-message" id="licence-error"></span>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Step 3: Location -->
+                <div class="form-step" id="step-3">
+                    <fieldset class="form-section">
+                        <legend>Location</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="latitude">Latitude *</label>
+                                <input type="number" id="latitude" name="latitude" placeholder="e.g., 28.7041" step="0.0001">
+                                <span class="error-message" id="latitude-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="longitude">Longitude *</label>
+                                <input type="number" id="longitude" name="longitude" placeholder="e.g., 77.1025" step="0.0001">
+                                <span class="error-message" id="longitude-error"></span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-secondary full-width" id="getLocationBtn">📍 Get Current Location</button>
+                    </fieldset>
+                </div>
+
+                <!-- Step 4: Working Hours -->
+                <div class="form-step" id="step-4">
+                    <fieldset class="form-section">
+                        <legend>Working Hours</legend>
+                        
+                        <div class="form-group">
+                            <label for="weeklyHoliday">Weekly Holiday *</label>
+                            <select id="weeklyHoliday" name="weeklyHoliday">
+                                <option value="">Select holiday</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                            <span class="error-message" id="weeklyHoliday-error"></span>
+                        </div>
+
+                        <div id="workingHoursContainer"></div>
+                    </fieldset>
+                </div>
+
+                <!-- Step 5: Review & Submit -->
+                <div class="form-step" id="step-5">
+                    <fieldset class="form-section">
+                        <legend>Review & Submit</legend>
+                        <div id="reviewSummary" class="review-summary"></div>
+                    </fieldset>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="btn-secondary" id="backBtn" style="display: none;">← Back</button>
+                    <button type="button" class="btn-primary" id="nextBtn">Next →</button>
+                    <button type="submit" class="btn-primary" id="submitBtn" style="display: none;">Submit Registration</button>
+                </div>
+
+                <div id="successMessage" class="success-message" style="display: none;">
+                    Registration submitted successfully!
+                </div>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

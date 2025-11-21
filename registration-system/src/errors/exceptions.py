@@ -2,7 +2,6 @@
 Custom exceptions
 """
 
-
 class PipelineException(Exception):
     """Base exception for pipeline errors"""
     pass

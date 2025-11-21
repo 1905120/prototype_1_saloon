@@ -109,6 +109,11 @@ class CustomerManager:
         """Initialize manager"""
         self._cache = None
         self._business = business
+        self.customer_name = None
+        self.email = None
+        self.address = None
+        self.location = None
+        self.date_of_birth = None
         
     def load_customer_metadata(self) -> None:
         """
@@ -185,6 +190,8 @@ class CustomerManager:
         
         # Get data from singleton cache
         data = self._cache.read_all()
+        if data:
+            return data
         schema_path = self._get_metaschema_path(self._business)
         # If data is empty and schema provided, create from schema
         if not data and schema_path:
@@ -378,21 +385,21 @@ class CustomerManager:
             customer_data = data["customer"][phone]
             latest_version = customer_data.get("latest_latest_version", 1)
             
-            # If latest version is 1, do nothing
-            if latest_version <= 1:
-                logger.info(f"Customer {phone} has version 1, no removal needed")
-                return False
+            # # If latest version is 1, do nothing
+            # if latest_version <= 1:
+            #     logger.info(f"Customer {phone} has version 1, no removal needed")
+            #     return False
             
             # Find and remove the latest version entry from versions array
             versions = customer_data.get("versions", [])
             
             # Find the entry with the latest version
-            version_to_remove = None
-            for i, version_entry in enumerate(versions):
-                if isinstance(version_entry, dict) and latest_version in version_entry:
-                    version_to_remove = i
-                    break
-            
+            # version_to_remove = None
+            # for i, version_entry in enumerate(versions):
+            #     if isinstance(version_entry, dict) and latest_version in version_entry:
+            #         version_to_remove = i
+            #         break
+            version_to_remove = latest_version
             if version_to_remove is not None:
                 # Remove the latest version entry
                 versions.pop(version_to_remove)
