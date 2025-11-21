@@ -62,10 +62,10 @@ class UniversalCache:
         self.data = {}  # In-memory data store
         self.is_loaded = False
         
-        # Read-Write Lock for thread-safe access
-        self.write_lock = threading.Lock()
-        self.read_count = 0
-        self.read_count_lock = threading.Lock()
+        # Use centralized lock manager
+        from src.core.lock_manager import get_lock_manager
+        from src.common.constants import ENABLE_LOCKING
+        self.lock_manager = get_lock_manager(enable_locking=ENABLE_LOCKING)
         
         logger.info(f"UniversalCache initialized: {cache_path} (schema: {schema_path})")
     
@@ -157,23 +157,17 @@ class UniversalCache:
     
     # ============ LOCK OPERATIONS ============
     def acquire_read_lock(self) -> None:
-        """Acquire read lock - multiple readers allowed"""
-        with self.read_count_lock:
-            self.read_count += 1
-            if self.read_count == 1:
-                self.write_lock.acquire()
+        """Acquire read lock (controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_read_lock()
     
     def release_read_lock(self) -> None:
-        """Release read lock"""
-        with self.read_count_lock:
-            self.read_count -= 1
-            if self.read_count == 0:
-                self.write_lock.release()
+        """Release read lock (controlled by ENABLE_LOCKING)"""
+        self.lock_manager.release_read_lock()
     
     def acquire_write_lock(self) -> None:
-        """Acquire write lock - exclusive access"""
-        self.write_lock.acquire()
+        """Acquire write lock (controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_write_lock()
     
     def release_write_lock(self) -> None:
-        """Release write lock"""
-        self.write_lock.release()
+        """Release write lock (controlled by ENABLE_LOCKING)"""
+        self.lock_manager.release_write_lock()

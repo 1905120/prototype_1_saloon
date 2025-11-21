@@ -234,9 +234,17 @@ class QueueManager:
             else:
                 logger.warning(f"Response not found in queue for session {session_id}")
                 return {
-                    "session_id": session_id,
-                    "status": "NOT_FOUND",
-                    "message": "Response not yet available or already retrieved"
+                    "result": {
+                        "response": {
+                            "session_id": session_id
+                        },
+                        "status": "FAILED",
+                        "message": "Response not yet available or already retrieved"
+                    },
+                    "err_details": {
+                        "err_msg": "Response not found",
+                        "err_type": "SYSTEM-PROCESS-ERR"
+                    }
                 }
 
 

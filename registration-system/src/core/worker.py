@@ -138,6 +138,7 @@ class Worker:
             
         except Exception as e:
             logger.error(f"Error in _process_operation: {str(e)}", exc_info=True)
+            from src.errors.error_handler import ErrorStore
             
             # Update status to FAILED with error details
             from src.core.queue_manager import get_queue_manager
@@ -146,9 +147,14 @@ class Worker:
             if hasattr(operation, 'session_id'):
                 session_id = operation.session_id
                 operation_type = operation.operation_type
+                phone = getattr(operation, 'phone', 'unknown')
             else:
                 session_id = operation.get("session_id")
                 operation_type = operation.get("operation_type")
+                phone = operation.get("phone", "unknown")
+            
+            # Store error in cache
+            ErrorStore.store(phone, str(e), "SYSTEM-PROCESS-ERR")
             
             queue_manager.set_status(
                 session_id,
@@ -160,11 +166,17 @@ class Worker:
             
             # Put error response in response queue and notify session manager
             error_response = {
-                "session_id": session_id,
-                "status": "FAILED",
-                "message": f"Error processing {operation_type}",
-                "error": str(e),
-                "data": None
+                "result": {
+                    "response": {
+                        "session_id": session_id
+                    },
+                    "status": "FAILED",
+                    "message": f"Error processing {operation_type}"
+                },
+                "err_details": {
+                    "err_msg": str(e),
+                    "err_type": "SYSTEM-PROCESS-ERR"
+                }
             }
             queue_manager.put_response(session_id, error_response)
             

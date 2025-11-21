@@ -21,4 +21,15 @@ B_SALON_CLIENT_META_DATA_PATH  = "data/businesses/salon/meta_data/client_meta_da
 BUSINESS_SERVICE_MODEL_SCHEMA_PATH = "DataModels/BusinessServiceModel/business_service_model.json"
 BUSINESS_SERVICE_MODEL_DATA_PATH   = "data/business_service_model"
 BUSINESS_SERVICE_MODEL_FILE_PATH   = "data/business_service_model/business_service.json"
+
+SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH = "data/businesses/salon/live"
+SALON_BUSINESS_CUSTOMER_HISTORY_DATA_PATH = "data/businesses/salon/history"
+SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH = "data/businesses/salon/customer_booking_map"
+SALON_BUSINESS_CUSTOMER_BOOKING_MAP_SCHEMA_PATH = "DataModels/Salon/CustomerBookingMapSchema/customer_booking_map.json"
+SALON_BUSINESS_SYSTEM_ACTIONS = ["get-customer_booking_map"]
+REQUIRED_MAND_FIELD_FOR_SALON_CUSTOMER = ["name", "phone", "business", "service_type"]
+
 TEST = True
+
+# Lock configuration
+ENABLE_LOCKING = True  # Set to True to enable locking, False for lock-free reads

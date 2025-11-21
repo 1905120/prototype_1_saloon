@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Customer Booking Map Schema",
+  "type": "object",
+  "properties": {
+    "success_bookings": {
+      "type": "integer",
+      "description": "Count of successful bookings"
+    },
+    "failed_cancelled_book": {
+      "type": "integer",
+      "description": "Count of failed or cancelled bookings"
+    },
+    "booking": {
+      "type": "object",
+      "description": "Mapping of business owners to their services and booking records",
+      "additionalProperties": {
+        "type": "object",
+        "description": "Business owner ID as key",
+        "additionalProperties": {
+          "type": "string",
+          "description": "Service ID as key, booking record ID as value"
+        }
+      }
+    }
+  },
+  "required": []
+}

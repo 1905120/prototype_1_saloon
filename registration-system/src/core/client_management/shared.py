@@ -26,7 +26,12 @@ class ClientCache:
         """
         self.path = path
         self._data: Dict[str, Any] = {}
-        self._lock = Lock()
+        
+        # Use centralized lock manager
+        from src.core.lock_manager import get_lock_manager
+        from src.common.constants import ENABLE_LOCKING
+        self.lock_manager = get_lock_manager(enable_locking=ENABLE_LOCKING)
+        
         self._loaded = False
         
         # Load data immediately (eager load)
@@ -69,26 +74,62 @@ class ClientCache:
             raise
     
     def read(self, key: str) -> Optional[Dict[str, Any]]:
-        """Read value from cache with lock"""
-        with self._lock:
+        """Read value from cache (locking controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_read_lock()
+        try:
             return self._data.get(key)
+        finally:
+            self.lock_manager.release_read_lock()
     
     def write(self, key: str, value: Dict[str, Any]) -> None:
-        """Write value to cache with lock and save"""
-        with self._lock:
+        """Write value to cache and save (locking controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_write_lock()
+        try:
             self._data[key] = value
-        self._save_to_file()
+            # Make a copy for file I/O outside lock
+            data_copy = dict(self._data)
+        finally:
+            self.lock_manager.release_write_lock()
+        self._save_to_file_unlocked(data_copy)
     
     def read_all(self) -> Dict[str, Any]:
-        """Read entire cache with lock"""
-        with self._lock:
+        """Read entire cache (locking controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_read_lock()
+        try:
             return dict(self._data)
+        finally:
+            self.lock_manager.release_read_lock()
     
     def write_all(self, data: Dict[str, Any]) -> None:
-        """Write entire cache with lock and save"""
-        with self._lock:
+        """Write entire cache and save (locking controlled by ENABLE_LOCKING)"""
+        self.lock_manager.acquire_write_lock()
+        try:
             self._data = dict(data)
-        self._save_to_file()
+            # Make a copy for file I/O outside lock
+            data_copy = dict(self._data)
+        finally:
+            self.lock_manager.release_write_lock()
+        self._save_to_file_unlocked(data_copy)
+    
+    def _save_to_file_unlocked(self, data: Dict[str, Any]) -> None:
+        """Save data to file (called outside lock)"""
+        try:
+            directory = os.path.dirname(self.path)
+            if directory and not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+            
+            temp_path = f"{self.path}.tmp"
+            with open(temp_path, 'w') as f:
+                json.dump(data, f, indent=2)
+            
+            if os.path.exists(self.path):
+                os.remove(self.path)
+            os.rename(temp_path, self.path)
+            
+            logger.info(f"Saved client cache to {self.path}")
+        except Exception as e:
+            logger.error(f"Failed to save client cache to {self.path}: {str(e)}")
+            raise
 
 
 def get_cache(path: str) -> ClientCache:
