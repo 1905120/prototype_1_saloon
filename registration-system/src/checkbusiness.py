@@ -139,6 +139,9 @@ async def setup_contexts(
         load_entity_context=load_entity_context
     )
 
+    if update_default == "client" and entity_type =="customer":
+        raise Exception("phone already registered as a Business client!")
+
     # If load_entity_context=False and phone not found, entity_type will be None
     if entity_type is None:
         logger.warning(f"Phone {phone} not found and load_entity_context=False, returning None for entity_context")
@@ -179,8 +182,8 @@ async def check_and_route_business(
     """
     from src.errors.error_handler import ErrorStore, ErrorResponse
     
-    business_context = None
-    phone = None
+    business_context    = None
+    phone               = None
     
     # Validate payload
     is_valid, phone, error_response = check_business(payload)
@@ -192,13 +195,17 @@ async def check_and_route_business(
         
         # Determine default entity type based on business
         if business == "salon":
-            update_default = "customer"  # Default for salon business
+            
+            update_default = payload.get("entity_type", None)
+
+            if not update_default:
+                update_default = "customer"  # Default for salon business
 
             # Initialize BusinessContext for salon
             from src.common.constants import B_SALON_META_DATA_PATH, B_SALON_META_SCHEMA_PATH ,B_SALON_CUST_META_SCHEMA_PATH, B_SALON_CUST_META_DATA_PATH, B_SALON_CLIENT_META_SCHEM_PATH, B_SALON_CLIENT_META_DATA_PATH
-            
+
             business_context, entity_context, entity_type, is_new_entity = await get_business_entity_context(payload, phone, business, update_default, B_SALON_META_DATA_PATH, B_SALON_META_SCHEMA_PATH)
-        
+            
             # Parse payload for salon
             if entity_type == "customer":
                 from src.business.salon.api import MainRequestCustomer
@@ -206,11 +213,11 @@ async def check_and_route_business(
             elif entity_type == "client":
                 from src.business.salon.api import MainRequestClient
                 main_request = MainRequestClient(**payload)
-            elif entity_type == "SYSTEM" and payload["action"] == "get-customer_booking_map":
+            elif entity_type == "SYSTEM" and payload.get("action", None) == "get-customer_booking_map":
                 from src.business.salon.api import MainRequestCustomerBookingMap
                 main_request = MainRequestCustomerBookingMap(**payload)
             else:
-                error_msg = "entity type missing!"
+                error_msg = "entity type missing!" 
                 ErrorStore.store(phone, error_msg, "SYSTEM-PROCESS-ERR")
                 return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, error_msg)
                 
@@ -223,6 +230,7 @@ async def check_and_route_business(
                 entity_type,
                 is_new_entity
             )
+            
             # if "status" in response and phone and response["status"] == "FAILED":
             #     business_context.metadata_manager._remove_phone_mapping(phone)
             return response

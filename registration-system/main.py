@@ -2,29 +2,16 @@
 Main entry point - FastAPI application with async routing
 Routes requests to appropriate endpoints based on action
 """
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Query
 from pydantic import BaseModel
 from typing import Dict, Any, Optional, Union
 from contextlib import asynccontextmanager
 from src.checkbusiness import check_and_route_business
 from src.business.salon.api import router as salon_router
-
-# # ============ REQUEST MODELS ============
-# class MakeRequestPayload(BaseModel):
-#     """Generic request payload for /api/v1/makerequest"""
-    
-#     model_config = {"extra": "allow"}
-#     action: str = None
-#     phone: str
-#     business: str
-#     name: Optional[str] = None
-#     updates: Optional[Dict[str, Any]] = None
-#     owner_name: Optional[str] = None
-#     salon_name: Optional[str] = None
-#     service_type: Optional[str] = None
-#     working_hours: Optional[list] = None
-#     service_type: str
-#     operation_id: Optional[str] = None
+from src.payments.routes import router as payments_router
+from src.chatbot_layer.api import router as chatbot_router
+from src.chatbot_layer.business_number_api import router as business_number_router
+import time
 
 class Response(BaseModel):
     """Response containing result and error details"""
@@ -47,11 +34,6 @@ async def lifespan(app: FastAPI):
         from src.core.worker_pool import get_worker_pool
         from src.common.constants import MAX_WORKER_THREADS
         from src.errors.error_handler import ErrorStore
-        # from src.core.BusinessServiceManagement import business_service_cache
-        
-        # logger.info("Startup: Initializing business service cache...")
-        # business_service_cache.initialize_cache(business_name="business_service")
-        # logger.info("Startup: Business service cache initialized")
         
         logger.info("Startup: Initializing error store cache...")
         ErrorStore.clear_all_errors()
@@ -89,49 +71,76 @@ async def lifespan(app: FastAPI):
         logger.error(f"Shutdown error: {str(e)}", exc_info=True)
 
 
-# Initialize FastAPI app with lifespan
 app = FastAPI(title="Salon Prototype 2", version="1.0.0", lifespan=lifespan)
 
-# Include salon router
+# Include routers
 app.include_router(salon_router)
+app.include_router(payments_router)
+app.include_router(chatbot_router)
+app.include_router(business_number_router)
 
 
 # ============ MAIN ENDPOINTS ============
-@app.get("/api/v1/getcustomerbookingmapping/{business_id}/{customer_id}", response_model=Response)
-async def get_customer_booking_mapping(business_id: str, customer_id: str, background_tasks: BackgroundTasks) -> Response:
+@app.post("/api/v1/getcustomerbookingmapping/{business_id}/{service_name}/{customer_id}", response_model=Response)
+async def get_customer_booking_mapping(
+    business_id: str,
+    customer_id: str,
+    service_name: str,
+    background_tasks: BackgroundTasks,
+    request: Request
+) -> Response:
     """
-    Get customer booking map
+    Get customer booking map with optional location details
     
     Args:
         business_id: Business ID (e.g., "salon")
         customer_id: Customer ID (phone number)
+        service_name: Service name
         background_tasks: FastAPI background tasks
+        request: Request body containing optional location details
     
     Returns:
-        Response: Contains customer booking map data
+        Response: Contains customer booking map data with location info
     """
     from src.errors.error_handler import ErrorStore, ErrorResponse
-    import json
-    import os
     
+    payload = None
     try:
-        from src.common.constants import SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH
-        
+        from src.core.BusinessServiceManagement import business_service_cache
+        from src.common.utils import parse_normal_time, get_current_normal_time
+        # Get request body if provided
+        body = {}
+        try:
+            body = await request.json()
+        except:
+            body = {}
+        request_time = parse_normal_time(body["request_time"]) if "request_time" in body else get_current_normal_time()
         payload = {
-                        "business"   : business_id,
-                        "phone"      : customer_id,
-                        "action"     : "get-customer_booking_map"
-                    }
+            "business": business_id,
+            "phone": customer_id,
+            "action": "get-customer_booking_map",
+            "service_name": service_name,
+            "request_time" : request_time
+        }
         
+        # Add location details from request body if provided
+        if "location" in body:
+            payload["location"] = body["location"]
+        
+        # Get business service - initializes cache automatically if needed
+        payload['operation_id'] = business_service_cache.get_operation_id(payload.get("business"), payload.get("service_name"))
+
+
         # Queue request to worker
+        
         response = await check_and_route_business(
             payload,
             background_tasks
         )
-
+        
         return response
     except Exception as e:
-        phone = payload.get("phone", "unknown") if 'payload' in locals() else "unknown"
+        phone = payload.get("phone", "unknown") if payload else "unknown"
         error_msg = str(e)
         ErrorStore.store(phone, error_msg, "SYSTEM-PROCESS-ERR")
         return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, f"Error processing request: {error_msg}")
@@ -140,6 +149,7 @@ async def get_customer_booking_mapping(business_id: str, customer_id: str, backg
 
 @app.post("/api/v1/makerequest", response_model=Response)
 async def make_request(request: Request, background_tasks: BackgroundTasks) -> Response:
+    
     """
     Main entry point for all requests
     Routes to salon business handler and WAITS for response
@@ -152,23 +162,28 @@ async def make_request(request: Request, background_tasks: BackgroundTasks) -> R
         Response: Contains session_id, status, and message with actual result
     """
     from src.errors.error_handler import ErrorStore, ErrorResponse
-    
+     
     try:
+        # import time
+        
         payload = await request.json()
-
+        
         from src.core.BusinessServiceManagement import business_service_cache
         
-        phone = payload.get("phone", "unknown")
+        phone       = payload.get("phone", "unknown")
+        business    = payload.get("business", None)
+        service_name= payload.get("service_type", None)
         
-        # Get business service - initializes cache automatically if needed
-        payload['operation_id'] = business_service_cache.get_operation_id(payload['business'], payload['service_type'])
+        payload['operation_id'] = business_service_cache.get_operation_id(business, service_name)
 
+        # Queue request to worker
+        
         # Queue request to worker
         response = await check_and_route_business(
             payload,
             background_tasks
         )
-
+        
         return response
     except Exception as e:
         phone = payload.get("phone", "unknown") if 'payload' in locals() else "unknown"
@@ -176,6 +191,13 @@ async def make_request(request: Request, background_tasks: BackgroundTasks) -> R
         ErrorStore.store(phone, error_msg, "SYSTEM-PROCESS-ERR")
         return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, f"Error processing request: {error_msg}")
 
+@app.middleware("http")
+async def add_timing(request, call_next):
+    start = time.time()
+    response = await call_next(request)
+    end = time.time()
+    print("FULL REQUEST TIME:", (end-start)*1000, "ms")
+    return response
 
 if __name__ == "__main__":
     import uvicorn
@@ -194,7 +216,7 @@ if __name__ == "__main__":
         port=8000,
         reload=False,
         log_level="debug",
-        access_log=True,
+        access_log=False,
         use_colors=True
     )
     

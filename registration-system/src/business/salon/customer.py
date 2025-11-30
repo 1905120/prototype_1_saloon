@@ -9,6 +9,7 @@ from src.common.constants import TEST
 import copy
 from pydantic import BaseModel
 import os
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -68,25 +69,25 @@ def create_dict_structure(schema: str, data: Dict, action) -> Dict[str, Any]:
 
     return data
 
-class MakeRequestPayloadForUpdateCust(BaseModel):
-    action: Optional[str]
-    updatedFields: Dict
+# class MakeRequestPayloadForUpdateCust(BaseModel):
+#     action: Optional[str]
+#     updatedFields: Dict
 
-class MakeRequestPayloadForCreateCust(BaseModel):
-    id: Optional[str] = None
-    name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    dateOfBirth: Optional[str] = None
-    address: Optional[str] = None
-    location: Optional[str] = None
-    version: Optional[str] = None
-    action: Optional[str] = None
-    updatedFields: Optional[Dict[str, Any]] = None
-    approvalStatus: Optional[str] = None
-    updatedAt: Optional[str] = None
-    registeredAt: Optional[str] = None
-    business: Optional[str] = None
+# class MakeRequestPayloadForCreateCust(BaseModel):
+#     id: Optional[str] = None
+#     name: Optional[str] = None
+#     email: Optional[str] = None
+#     phone: Optional[str] = None
+#     dateOfBirth: Optional[str] = None
+#     address: Optional[str] = None
+#     location: Optional[str] = None
+#     version: Optional[str] = None
+#     action: Optional[str] = None
+#     updatedFields: Optional[Dict[str, Any]] = None
+#     approvalStatus: Optional[str] = None
+#     updatedAt: Optional[str] = None
+#     registeredAt: Optional[str] = None
+#     business: Optional[str] = None
 
 def clean_payload(structure, request_data, action):
     
@@ -146,6 +147,15 @@ class Customer:
 
         return True
 
+    def read_record(self, path):
+        
+        try:
+            with open(path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f'ERROR - {str(e)}')
+            return None
+
     async def create(self, session_cache, current_version_data, field_validation_error) -> Dict[str, Any]:
         """Create new customer"""
         try:
@@ -155,10 +165,11 @@ class Customer:
             else :
                 raise Exception("Session Id Missing")
             from src.common.constants import REQUIRED_MAND_FIELD_FOR_SALON_CUSTOMER
-            field_validation_error["missing_keys"] = [key for key in field_validation_error["missing_keys"] if key in REQUIRED_MAND_FIELD_FOR_SALON_CUSTOMER]
-            if field_validation_error["missing_keys"]:
-                missing_fields = [f'missing field :- {each_field}' for each_field in field_validation_error["missing_keys"]]
-                raise Exception("; ".join(missing_fields))
+            if field_validation_error:
+                field_validation_error["missing_keys"] = [key for key in field_validation_error["missing_keys"] if key in REQUIRED_MAND_FIELD_FOR_SALON_CUSTOMER]
+                if field_validation_error["missing_keys"]:
+                    missing_fields = [f'missing field :- {each_field}' for each_field in field_validation_error["missing_keys"]]
+                    raise Exception("; ".join(missing_fields))
 
             from src.common.constants import SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH, SALON_BUSINESS_CUSTOMER_HISTORY_DATA_PATH
 
@@ -311,12 +322,137 @@ class Customer:
                     "err_type": "BUSSINESS-PROCESS-ERR"
                 }
             }
-    async def get_customer_booking_map(self, session_cache, optiona_arg1, optional_arg2) -> Dict[str, Any]:
-        """Get customer booking map"""
-        try:
-            from src.common.constants import SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH
+    def get_entity_latest_record(self, entity_type, entity_context, session_cache, lookup_id=None):
+
+        from src.common.constants import SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH, SALON_BUSINESS_CLIENT_LIVE_DATA_PATH
+
+        latest_version_record_id = None
+
+        if entity_type == "customer":
+            meta_data = entity_context.customer_manager.get_all()
+            customers = meta_data["customer"]
+            if session_cache.phone in customers:
+                version_no = customers[session_cache.phone]["latest_latest_version"]
+            else:
+                raise Exception(f"Not a valid customer - {session_cache.phone} !")
+            if "versions" in customers[session_cache.phone] and customers[session_cache.phone]["versions"]:
+                if str(version_no) in customers[session_cache.phone]["versions"]:
+                    latest_version_record_id = customers[session_cache.phone]["versions"][str(version_no)]
+                elif str(version_no) in customers[session_cache.phone]["versions"]:
+                    latest_version_record_id = customers[session_cache.phone]["versions"][str(version_no)]
+
+        elif entity_type == "client":
+            meta_data = entity_context.client_manager.get_all()
+            client = meta_data["client"]
             
-            customer_id = getattr(session_cache, "phone", None)
+            version_no = client[lookup_id]["latest_latest_version"]
+            if "versions" in client[lookup_id] and client[lookup_id]["versions"]:
+                if str(version_no) in client[lookup_id]["versions"]:
+                    latest_version_record_id = client[lookup_id]["versions"][str(version_no)]
+
+        record = None
+
+        if latest_version_record_id:
+
+            if entity_type == "customer":
+                path   = f'{SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH}/{latest_version_record_id}.json'
+                record = self.read_record(path)
+            elif entity_type == "client":
+                path   = f'{SALON_BUSINESS_CLIENT_LIVE_DATA_PATH}/{latest_version_record_id}.json'
+                record = self.read_record(path)
+
+        return record
+
+    async def get_customer_suggestions(self, session_cache, optiona_arg1, optional_arg2) -> Dict[str, Any]:
+        """Get customer booking map"""
+        data = {}
+        try:
+            from src.common.constants import SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH, SALON_SERVICE_BUSINESS_MAP_DATA_PATH, SUGGETION_OF_SALONS_DEFAULT, SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH, SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH
+            from src.business.salon.location import is_nearby
+            from src.common.utils import is_request_time_less
+            customer_context = session_cache.process_context["customer_context"]
+            client_context   = session_cache.process_context["client_context"]
+            service_type_required = session_cache.operation_id
+            customer_id      = getattr(session_cache, "phone", None)
+            CustomerLocationDetails = session_cache.location
+            from_latitute = None
+            from_longitute = None
+            if not CustomerLocationDetails:
+                customer_record = self.get_entity_latest_record("customer", customer_context, session_cache, customer_id)
+                CustomerLocationDetails = customer_record["location"]
+            if CustomerLocationDetails:
+                from_latitute   = CustomerLocationDetails["latitude"]
+                from_longitute  = CustomerLocationDetails["longitude"]
+            if not from_latitute or not from_longitute or not CustomerLocationDetails:
+                raise Exception(f"location missing for customer {customer_id}")
+            with open(SALON_SERVICE_BUSINESS_MAP_DATA_PATH, "r") as f:
+                ServiceBusinessMap = json.load(f)
+            default_suggestion = []
+            if "salon" in ServiceBusinessMap:
+                for each_service in ServiceBusinessMap["salon"]:
+                    if service_type_required not in each_service:
+                        continue
+                    for salon in ServiceBusinessMap["salon"][each_service]:
+                        data = {salon : {}} if salon not in data else data[salon]
+                        client_id    = salon
+                        location_det = ServiceBusinessMap["salon"][each_service][salon]["location"]
+                        to_lattitute    = location_det["latitude"]
+                        to_longitute    = location_det["longitude"]
+                        #customer_record = self.get_entity_latest_record("customer", customer_context, session_cache, customer_id)
+                        # CustomerLocationDetails = customer_record["location"]
+                        # from_latitute   = CustomerLocationDetails["latitude"]
+                        # from_longitute  = CustomerLocationDetails["longitude"]
+                        salonName       = ServiceBusinessMap["salon"][each_service][salon]["salonName"]
+                        valid_distance  = is_nearby(from_latitute, from_longitute, to_lattitute, to_longitute, 15.0, "km")
+                        if valid_distance:
+                            #now check the slots availability
+                            client_record = self.get_entity_latest_record("client", client_context, session_cache, lookup_id=client_id)
+                            slot_details  = client_record["slots"]["slotId"]
+                            for slot in slot_details:
+                                slot_time = datetime.strptime(slot_details[slot]["slotTime"], "%H:%M").strftime("%I:%M %p")
+                                is_valid_time = is_request_time_less(session_cache.request_time, slot_time)
+                                if is_valid_time and slot_details[slot]["isAvailable"]:
+                                    default_suggestion.append({
+                                        "salonId" : client_id,
+                                        "salonName" : salonName,
+                                        "slot"  :  slot,
+                                        "askBeforeBooking" : slot_details[slot]["askBeforeBooking"],
+                                        "slotTime"  : slot_time
+                                    })
+            #suggestion by cutomer previous bookings
+            if default_suggestion:
+                data["default_suggestion"] = default_suggestion
+            else:
+                data = {}
+                raise Exception("No Slots Available at the movement nearby")
+
+            previous_customer_bookings = {}
+            with open(f'{SALON_BUSINESS_CUSTOMER_BOOKING_MAP_PATH}/{customer_id}.json', "r") as f:
+                previous_customer_bookings = json.load(f)
+            
+            history_suggestion = []
+            for each_book in previous_customer_bookings["booking"]:
+                if service_type_required in previous_customer_bookings["booking"][each_book]:
+                    client_id     = each_book
+                    salonName     = previous_customer_bookings["booking"][each_book]["salonName"]
+                    client_record = self.get_entity_latest_record("client", customer_context, session_cache, client_id)
+                    if service_type_required not in client_record["services"]:
+                        continue
+                    slot_details  = client_record["slots"]["slotId"]
+                    for slot in slot_details:
+                        slot_time = datetime.strptime(slot_details[slot]["slotTime"], "%H:%M").strftime("%I:%M %p")
+                        is_valid_time = is_request_time_less(session_cache.request_time, slot_time)
+                        if is_valid_time and slot["isAvailable"]:
+                            history_suggestion.append({
+                                        "salonId" : client_id,
+                                        "salonName" : salonName,
+                                        "slot"  :  slot,
+                                        "askBeforeBooking" : slot_details[slot]["askBeforeBooking"],
+                                        "slotTime"  : slot_time
+                                    })
+
+            if history_suggestion:
+                data["historySuggestion"] = history_suggestion
             session_id = getattr(session_cache, "session_id", None)
             business_id = getattr(session_cache, "business", None)
             
@@ -325,34 +461,14 @@ class Customer:
             # Check if file exists
             if not os.path.exists(booking_map_path):
                 error_msg = f"Customer booking map not found for customer_id: {customer_id}"
-                return {
-                    "result": {
-                        "response": {
-                            "session_id": session_id,
-                            "business_id": business_id,
-                            "customer_id": customer_id,
-                            "customerbookingmap": {}
-                        },
-                        "status": "FAILED",
-                        "message": error_msg
-                    },
-                    "err_details": {
-                        "err_msg": error_msg,
-                        "err_type": "BUSINESS-PROCESS-ERR"
-                    }
-                }
-            
-            # Read booking map data
-            with open(booking_map_path, 'r') as f:
-                booking_map_data = json.load(f)
-            
+                
             return {
                 "result": {
                     "response": {
                         "session_id": session_id,
                         "business_id": business_id,
                         "customer_id": customer_id,
-                        "customerbookingmap": booking_map_data
+                        "customer_salon_suggestion": data
                     },
                     "status": "SUCCESS",
                     "message": "Customer booking map retrieved successfully"
@@ -368,10 +484,10 @@ class Customer:
                         "session_id": getattr(session_cache, "session_id", None),
                         "business_id": getattr(session_cache, "business", None),
                         "customer_id": getattr(session_cache, "phone", None),
-                        "customerbookingmap": {}
+                        "customerbookingmap": data
                     },
                     "status": "FAILED",
-                    "message": f"Error retrieving customer booking map: {str(e)}"
+                    "message": f"ERROR : {str(e)}"
                 },
                 "err_details": {
                     "err_msg": str(e),

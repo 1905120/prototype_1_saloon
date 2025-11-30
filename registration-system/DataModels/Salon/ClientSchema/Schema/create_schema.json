@@ -12,28 +12,51 @@
       "type": "string",
       "minLength": 1
     },
-    "mobile": {
+    "phone": {
       "type": "string",
       "pattern": "^[0-9]{10,15}$",
       "description": "Used as primary key"
     },
     "email": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "email"
     },
     "ownerAddress": {
       "type": "string"
     },
     "salonName": {
-      "type": "string",
+      "type": "",
+      "minLength": 1
+    },
+    "business": {
+      "type": "salon",
       "minLength": 1
     },
     "salonAddress": {
       "type": "string"
     },
     "serviceType": {
-      "type": "string",
-      "enum": ["Salon", "Beauty", "Hair", "Unisex", "Spa", "Combined"]
+      "type": "array",
+      "enum": [
+        "Salon",
+        "Beauty",
+        "Hair",
+        "Unisex",
+        "Spa",
+        "Combined"
+      ]
+    },
+    "services": {
+      "type": "object",
+      "Properties": {
+        "^[a-zA-Z0-9-_ ]+$": {
+          "type": "string",
+          "description": "Details or description of the service"
+        }
+      }
     },
     "workingHours": {
       "type": "array",
@@ -43,7 +66,15 @@
         "properties": {
           "day": {
             "type": "string",
-            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            "enum": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ]
           },
           "openTime": {
             "type": "string",
@@ -61,21 +92,32 @@
             "default": false
           }
         },
-        "required": ["day", "openTime", "closeTime"]
+        "required": [
+          "day",
+          "openTime",
+          "closeTime"
+        ]
       },
       "minItems": 1
     },
     "weeklyHoliday": {
-      "type": "string",
+      "type": "array",
       "description": "e.g., 'Monday'"
     },
     "location": {
       "type": "object",
       "properties": {
-        "latitude": {"type": "number"},
-        "longitude": {"type": "number"}
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        }
       },
-      "required": ["latitude", "longitude"]
+      "required": [
+        "latitude",
+        "longitude"
+      ]
     },
     "isOpen": {
       "type": "boolean",
@@ -108,17 +150,26 @@
                   "default": false
                 }
               },
-              "required": ["slotTime", "isAvailable", "askBeforeBooking"]
+              "required": [
+                "slotTime",
+                "isAvailable",
+                "askBeforeBooking"
+              ]
             }
           },
           "additionalProperties": false
         }
       },
-      "required": ["slotId"],
+      "required": [
+        "slotId"
+      ],
       "additionalProperties": false
     },
     "licence": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Business licence number or document"
     },
     "version": {
@@ -130,20 +181,37 @@
     "action": {
       "type": "string",
       "description": "Action that created/modified the record",
-      "enum": ["CREATE-CLIENT", "UPDATE-CLIENT", "DELETE-CLIENT"]
+      "enum": [
+        "CREATE-CLIENT",
+        "UPDATE-CLIENT",
+        "DELETE-CLIENT"
+      ]
     },
     "approvalStatus": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Approval status of the client registration",
-      "enum": ["PENDING", "APPROVED", "REJECTED"]
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
     },
     "updatedAt": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time",
       "description": "Timestamp of last update"
     },
     "updatedFields": {
-      "type": ["array", "null"],
+      "type": [
+        "array",
+        "null"
+      ],
       "description": "Array of field IDs that were updated",
       "items": {
         "type": "integer"
@@ -153,13 +221,21 @@
       "type": "string",
       "format": "date-time",
       "description": "System generated timestamp"
-    },
-    "business": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Business name or category"
     }
   },
-  "required": ["ownerName", "mobile", "salonName", "salonAddress", "serviceType", "business", "workingHours", "weeklyHoliday", "location", "version", "action", "registeredAt"],
+  "required": [
+    "ownerName",
+    "mobile",
+    "salonName",
+    "salonAddress",
+    "serviceType",
+    "business",
+    "workingHours",
+    "weeklyHoliday",
+    "location",
+    "version",
+    "action",
+    "registeredAt"
+  ],
   "additionalProperties": false
 }

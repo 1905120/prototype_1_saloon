@@ -64,7 +64,7 @@ class DataPipeline:
             if "properties" in prop_schema:
                 obj = {}
                 for key, value_schema in prop_schema["properties"].items():
-                    obj[key] = _get_default_value(value_schema)
+                    obj[key] = self._get_default_value(value_schema)
                 return obj
             return {}
         
@@ -104,7 +104,7 @@ class DataPipeline:
         """
         try:
 
-            schema_file_path = f"DataModels/{self.session_cache.business}/CustomerSchema/Schema/create_schema.json"
+            schema_file_path = self.session_cache.create_schema_path
             
             if not os.path.exists(schema_file_path):
                 logger.warning(f"Schema file not found: {schema_file_path}, using default")
@@ -146,7 +146,7 @@ class DataPipeline:
         """
         import json
         import logging
-        from src.common.constants import SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH
+        
         logger = logging.getLogger(__name__)
         
         try:
@@ -154,7 +154,9 @@ class DataPipeline:
             latest_version_record = {}
             current_version_data = {}
 
-            live_data_store_path = f'{SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH}/{self.session_cache.latest_version_record_id}'
+            if self.session_cache.action == "get-customer_booking_map":
+                return {}
+            live_data_store_path = f'{self.session_cache.live_record_path}/{self.session_cache.latest_version_record_id}.json'
             
             if os.path.exists(live_data_store_path):
                 with open(live_data_store_path, 'r') as f:
@@ -176,7 +178,12 @@ class DataPipeline:
                     # Add session cache attribute to current version data
                     if key == 'operation' or key not in empty_schema:
                         continue
-                    current_version_data[key] = value
+                    elif value:
+                        empty_schema[key] = value 
+                    elif key in current_version_data:
+                        empty_schema[key] = current_version_data[key]
+                    else:
+                        empty_schema[key] = None
             
             # result = {
             #     'latest_version': latest_version,
@@ -184,7 +191,7 @@ class DataPipeline:
             # }
             
             # logger.info(f"Load phase completed - Latest version: {latest_version}, Current version data keys: {list(current_version_data.keys())}")
-            return current_version_data, empty_schema
+            return empty_schema
             
         except FileNotFoundError:
             logger.error(f"Record file not found at {path}")
@@ -227,10 +234,11 @@ class DataPipeline:
         """
         try:
             # Phase 1: Load
-            current_version_data, empty_schema = self.load()
+            
+            current_version_data = self.load()
             
             # Phase 2: Validate
-            field_validation_error = self.field_validate(current_version_data, empty_schema)
+            field_validation_error = []#self.field_validate(current_version_data, empty_schema)
             
             response = await function(self.session_cache, current_version_data, field_validation_error)
 
