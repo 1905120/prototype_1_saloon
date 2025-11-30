@@ -126,12 +126,12 @@ class ClientContext:
         from src.core.client_management.manager import ClientManager
         
         # Initialize manager
-        self.client_manager = ClientManager()
+        self.client_manager = ClientManager(business)
         
         # Load client metadata for business (singleton cache)
         self.client_manager.load_client_metadata(business)
         self._business = business
-        
+        self._action = None
         logger.info(f"ClientContext initialized for business: {business}")
     
     def destroy(self) -> None:

@@ -1,0 +1,54 @@
+{
+    "clientId": "9000000051",
+    "ownerName": "Jessica Lee",
+    "phone": "9000000051",
+    "email": "jessica.lee@example.com",
+    "ownerAddress": "25917 Carla Crossroad Suite 803, Jefferyburgh, VT 64283",
+    "salonName": "Heart Salon",
+    "business": "salon",
+    "salonAddress": "25917 Carla Crossroad Suite 803, Jefferyburgh, VT 64283",
+    "serviceType": [
+        "Salon"
+    ],
+    "services": {
+        "salon_service_003": "hair-styling",
+        "salon_service_008": "waxing"
+    },
+    "workingHours": [
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -89.370827,
+        "longitude": 30.764853
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-270323",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

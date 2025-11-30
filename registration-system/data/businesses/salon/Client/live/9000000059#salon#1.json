@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000059",
+    "ownerName": "Julia Steele",
+    "phone": "9000000059",
+    "email": "julia.steele@example.com",
+    "ownerAddress": "0554 Thomas Place, Craigmouth, WA 40677",
+    "salonName": "Yeah Salon",
+    "business": "salon",
+    "salonAddress": "0554 Thomas Place, Craigmouth, WA 40677",
+    "serviceType": [
+        "Unisex",
+        "Salon"
+    ],
+    "services": {
+        "salon_service_006": "pedicure",
+        "salon_service_003": "hair-styling",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Unisex",
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -76.071931,
+        "longitude": 30.490385
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-763764",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

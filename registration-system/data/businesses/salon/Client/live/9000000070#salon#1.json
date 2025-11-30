@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000070",
+    "ownerName": "Cynthia Ferguson",
+    "phone": "9000000070",
+    "email": "cynthia.ferguson@example.com",
+    "ownerAddress": "79642 Johnston Canyon, Port Biancafurt, OH 80453",
+    "salonName": "Cover Salon",
+    "business": "salon",
+    "salonAddress": "79642 Johnston Canyon, Port Biancafurt, OH 80453",
+    "serviceType": [
+        "Salon",
+        "Spa"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Salon",
+        "Spa"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 61.1957425,
+        "longitude": 170.405522
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-399554",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

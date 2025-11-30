@@ -12,44 +12,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class SessionData:
-    """Session data object"""
-    
-    def __init__(self, session_dict: Dict[str, Any]):
-        """
-        Initialize session data from dictionary
-        
-        Args:
-            session_dict: Dictionary containing session information
-        """
-        self.session_id = session_dict.get("session_id")
-        self.entity_id = session_dict.get("entity_id")
-        self.phone = session_dict.get("phone")
-        self.operation_type = session_dict.get("operation_type") #action
-        self.operation = session_dict.get("operation") #function
-        #self.status = session_dict.get("status")
-        #self.process_status = "QUEUED"  # Track processing status
-        self.updatedAt = session_dict.get("session_created_at")
-        #self.process_result = session_dict.get("process_result")
-        #self.error = session_dict.get("error")
-        #self.session_finished_at = session_dict.get("session_finished_at")
-        self.operation_id = session_dict.get("operation_id") #service id for the business
-        self.business = session_dict.get("business")
-        self.latest_version_record_id = session_dict.get("latest_version_record_id")
-        
-        self.id = session_dict.get("phone")
-        self.name = session_dict.get("name")
-        self.email = session_dict.get("email")
-        self.dataOfBirth = session_dict.get("dateOfBirth")
-        self.address = session_dict.get("address")
-        self.location = session_dict.get("location")
-        self.version = session_dict.get("version")
-        self.action = session_dict.get("action")
-        self.approvalStatus = session_dict.get("approvalStatus")
-        self.updatedFields = session_dict.get("updatedFields")
-        self.registeredAt = session_dict.get("registeredAt")
-        self.service_type = session_dict.get("service_type")
-
 class SessionManager:
     """Manages session lifecycle with metadata tracking and response fetching"""
     
@@ -58,7 +20,7 @@ class SessionManager:
     _cache_lock = threading.Lock()
     _response_events = {}
     
-    def __init__(self, entity_type, handler_func, entity_context, payload):
+    def __init__(self, entity_type, entity_context, payload):
         """
         Initialize session manager
         
@@ -70,16 +32,10 @@ class SessionManager:
         """
         self.sessions = {}
         self.entity_type = entity_type  # "customer" or "client"
-        self.handler_func = handler_func
         self.entity_context = entity_context
         self.payload = payload
-        self.session_id = None
-        self.entity_key = None
         self.Err = None
-        self.latest_version_record_id = None
         self.entity_id = None
-        self.latest_version = None
-        self.Err = ""
 
     def create_session(self):
             
@@ -87,40 +43,81 @@ class SessionManager:
 
             self.update_entity_meta_data()
             
-            from src.common.constants import SALON_BUSINESS_SYSTEM_ACTIONS
+            from src.common.constants import SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH, SALON_BUSINESS_SYSTEM_ACTIONS, SALON_BUSINESS_CLIENT_LIVE_DATA_PATH, B_SALON_CUST_CREATE_SCHEM_PATH, B_SALON_CLIENT_CREATE_SCHEM_PATH
+            from src.core.BusinessServiceManagement import business_service_cache
             if self.entity_type == "customer":
                 self.sessions = {
-                                    "action": self.entity_context._action,
+                                    "action": self.payload.action,
                                     "session_id": self.session_id,
                                     "entity_id" : self.entity_id,
                                     "phone": self.payload.phone,
-                                    "operation_type": self.entity_context._action,
+                                    "operation_type": self.payload.action,
                                     "status": None,
-                                    "operation": self.handler_func,
+                                    "operation": self.payload.handler_func,
                                     "session_created_at": datetime.now().isoformat(),
                                     "process_result": None,
                                     "error": [],
                                     "session_finished_at" : None,
                                     "operation_id": self.payload.operation_id,
                                     "business":self.payload.business,
-                                    "latest_version_record_id" : self.latest_version_record_id,
-                                    "name": self.entity_context.customer_name,
-                                    "email": self.entity_context.email,
-                                    "location": self.entity_context.location,
-                                    "address": self.entity_context.address,
-                                    "dataOfBirth": self.entity_context.date_of_birth,
-                                    "version" : self.latest_version
+                                    "latest_version_record_id" : self.payload.latest_version_record_id,
+                                    "name": self.payload.name,
+                                    "email": self.payload.email,
+                                    "location": self.payload.location,
+                                    "address": self.payload.address,
+                                    "dataOfBirth": self.payload.dateOfBirth,
+                                    "version" : self.payload.latest_version,
+                                    "live_record_path" : SALON_BUSINESS_CUSTOMER_LIVE_DATA_PATH,
+                                    "create_schema_path" : B_SALON_CUST_CREATE_SCHEM_PATH,
+                                    "operation_id" : self.payload.operation_id
                                 }
             elif self.entity_type == "client":
-                pass
+                self.sessions = {
+                                    "session_id": self.session_id,
+                                    "clientId" : self.entity_id,
+                                    "entity_id" : self.entity_id,
+                                    "ownerName" : self.payload.ownerName,
+                                    "phone" : self.payload.phone,
+                                    "email" : self.payload.email,
+                                    "ownerAddress" : getattr(self.payload, "ownerAddress", []),
+                                    "salonName": getattr(self.payload, "salonName", []),
+                                    "business" : self.payload.business,
+                                    "salonAddress" : getattr(self.payload, "salonAddress", ""),
+                                    "serviceType" : getattr(self.payload, "serviceType", []),
+                                    "workingHours" : getattr(self.payload, "serviceType", []),
+                                    "weeklyHoliday" : getattr(self.payload, "weeklyHoliday", []),
+                                    "location": getattr(self.payload, "location"),
+                                    "isOpen": getattr(self.payload, "isOpen", None),
+                                    "slots": getattr(self.payload, "slots", [{}]),
+                                    "licence": getattr(self.payload, "licence", ""),
+                                    "version": self.payload.latest_version,
+                                    "action": getattr(self.payload, "action", None),
+                                    "approvalStatus": None,
+                                    "updatedAt": None,
+                                    "updatedFields": None,
+                                    "registeredAt": None,
+                                    "operation_type": self.payload.action,
+                                    "operation": self.payload.handler_func,
+                                    "operation_id": getattr(self.payload, "action", None),
+                                    "latest_version_record_id" : self.payload.latest_version_record_id,
+                                    "live_record_path" : SALON_BUSINESS_CLIENT_LIVE_DATA_PATH,
+                                    "create_schema_path" : B_SALON_CLIENT_CREATE_SCHEM_PATH,
+                                    "services" : self.payload.services,
+                                    "salonName" : self.payload.salonName
+                                }
             elif self.entity_type == "SYSTEM" and self.payload.action in SALON_BUSINESS_SYSTEM_ACTIONS:
                 self.sessions = {
                                     "action"   : self.payload.action,
                                     "phone"    : self.payload.phone,
                                     "business" : self.payload.business,
-                                    "operation": self.handler_func,
+                                    "operation": self.payload.handler_func,
+                                    "operation_id" : self.payload.operation_id,
                                     "id"       : self.payload.phone,
-                                    "session_id": self.session_id
+                                    "session_id": self.session_id,
+                                    "process_context" : self.entity_context,
+                                    "operation_type": self.payload.action,
+                                    "location" : self.payload.location,
+                                    "request_time" : self.payload.request_time
                                 }
 
             return
@@ -132,7 +129,7 @@ class SessionManager:
         try:
             session_cache = self.pre_process()
             
-            if session_cache is None:
+            if not session_cache:
                 error_msg = "Failed to create session"
                 ErrorStore.store(self.payload.phone, error_msg, "SYSTEM-PROCESS-ERR")
                 return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, error_msg, {"session_id": self.session_id})
@@ -153,23 +150,30 @@ class SessionManager:
         
         return response
     
-    def pre_process(self) -> Optional[SessionData]:
+    def pre_process(self) -> Optional[Any]:
         """Load session from storage and create session data object"""
         from src.errors.error_handler import ErrorStore
+        from src.business.salon.api import SessionCache_Client, SessionCache_Customer, SessionCache_GetCustomerSuggestion
         
         # Create session
         self.create_session()
 
         if not self.sessions: #this is the session cache
-            error_msg = "No session found"
+            error_msg = "session cache not found"
             ErrorStore.store(self.payload.phone, error_msg, "SYSTEM-PROCESS-ERR")
             logger.error(error_msg)
             return None
         
         # Create a session data object from stored session
-        session_data = SessionData(self.sessions)
-        
-        return session_data
+        SessionData = None
+        if self.payload.business == "salon" and self.entity_type == "client":
+            SessionData = SessionCache_Client(self.sessions)
+        if self.payload.business == "salon" and self.entity_type == "customer":
+            SessionData = SessionCache_Customer(self.sessions)
+        if self.payload.business == "salon" and self.entity_type == "SYSTEM":
+            SessionData = SessionCache_GetCustomerSuggestion(self.sessions)
+
+        return SessionData
 
     def post_process(self) -> Dict[str, Any]:
         """
@@ -194,28 +198,45 @@ class SessionManager:
             meta_data = self.entity_context.customer_manager.get_all()
             customers = meta_data["customer"]
             
-            seq_id     = meta_data["metadata"]["total_customers"]
             if not customers[self.payload.phone]["customer_id"]:
-                self.entity_key = self.payload.phone
-                customers[self.payload.phone]["customer_id"] = self.entity_key
-                # Increment total_customers after generating seq_id
+                self.payload.entity_meta_key = self.payload.phone
+                customers[self.payload.phone]["customer_id"] = self.payload.entity_meta_key
                 meta_data["metadata"]["total_customers"] += 1
-            else:
-                self.entity_key = customers[self.payload.phone]["customer_id"]
+            # else:
+            #     self.payload.entity_meta_key = customers[self.payload.phone]["customer_id"]
             
             version_no = customers[self.payload.phone]["latest_latest_version"]
             if "versions" in customers[self.payload.phone] and customers[self.payload.phone]["versions"]:
                 if version_no in customers[self.payload.phone]["versions"]:
-                    self.latest_version_record_id = customers[self.payload.phone]["versions"][version_no]
+                    self.payload.latest_version_record_id = customers[self.payload.phone]["versions"][version_no]
+
             version_no += 1
-            self.latest_version = version_no
+            self.payload.latest_version = version_no
             self.entity_id = f'{self.payload.business}#{self.payload.operation_id}#{self.session_id}'
             
             customers[self.payload.phone]["latest_latest_version"] = version_no
             customers[self.payload.phone]["versions"][version_no] = self.entity_id
+            if self.payload.action != "get-customer_booking_map":
+                self.entity_context.customer_manager.put_all(meta_data)
+        elif self.entity_type == "client":
+            meta_data = self.entity_context.client_manager.get_all()
+            client = meta_data["client"]
             
-            self.entity_context.customer_manager.put_all(meta_data)
+            if not client[self.payload.phone]["client_id"]:
+                self.payload.entity_meta_key = self.payload.phone
+                client[self.payload.phone]["client_id"] = self.payload.entity_meta_key
+                meta_data["metadata"]["total_clients"] += 1
+            version_no = client[self.payload.phone]["latest_latest_version"]
+            if "versions" in client[self.payload.phone] and client[self.payload.phone]["versions"]:
+                if version_no in client[self.payload.phone]["versions"]:
+                    self.payload.latest_version_record_id = client[self.payload.phone]["versions"][version_no]
+            version_no += 1
+            self.payload.latest_version = version_no
+            self.entity_id = f'{self.payload.phone}#{self.payload.business}#{version_no}'
+            client[self.payload.phone]["latest_latest_version"] = version_no
+            client[self.payload.phone]["versions"][version_no] = self.entity_id
 
+            self.entity_context.client_manager.put_all(meta_data)
         return
 
 
@@ -225,7 +246,7 @@ class SessionManager:
             self.entity_context.customer_manager.remove_entry(phone)
         return
         
-    def session_queue_manager(self, session_cache: SessionData) -> bool:
+    def session_queue_manager(self, session_cache) -> bool:
         """
         Add session to queue for worker processing
         

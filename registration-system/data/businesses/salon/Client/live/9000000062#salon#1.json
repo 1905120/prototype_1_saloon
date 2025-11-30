@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000062",
+    "ownerName": "Richard Rodriguez",
+    "phone": "9000000062",
+    "email": "richard.rodriguez@example.com",
+    "ownerAddress": "8682 Fields Field, South Victor, NY 66357",
+    "salonName": "Lead Salon",
+    "business": "salon",
+    "salonAddress": "8682 Fields Field, South Victor, NY 66357",
+    "serviceType": [
+        "Spa",
+        "Combined"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Spa",
+        "Combined"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 28.867945,
+        "longitude": 166.416945
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-480015",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

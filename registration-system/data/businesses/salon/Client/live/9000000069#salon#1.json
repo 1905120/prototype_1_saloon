@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000069",
+    "ownerName": "Holly Harris",
+    "phone": "9000000069",
+    "email": "holly.harris@example.com",
+    "ownerAddress": "405 Young Heights, West Nicholas, DC 12802",
+    "salonName": "His Salon",
+    "business": "salon",
+    "salonAddress": "405 Young Heights, West Nicholas, DC 12802",
+    "serviceType": [
+        "Spa",
+        "Salon"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Spa",
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -74.959834,
+        "longitude": 151.090041
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-105949",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

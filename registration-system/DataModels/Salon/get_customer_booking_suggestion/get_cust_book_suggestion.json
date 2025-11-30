@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LocationRequest",
+  "description": "Schema for a location with a request time",
+  "type": "object",
+  "properties": {
+    "location": {
+      "type": "object",
+      "description": "Coordinates of the location",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "Latitude value between -90 and 90"
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Longitude value between -180 and 180"
+        }
+      },
+      "required": ["latitude", "longitude"]
+    },
+    "request_time": {
+      "type": "string",
+      "description": "Time of the request, e.g., '12 am', '14:30', etc."
+    }
+  },
+  "required": ["location", "request_time"],
+  "additionalProperties": false
+}

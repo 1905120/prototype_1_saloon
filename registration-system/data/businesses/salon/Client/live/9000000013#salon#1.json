@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000013",
+    "ownerName": "Timothy Garcia",
+    "phone": "9000000013",
+    "email": "timothy.garcia@example.com",
+    "ownerAddress": "79920 Cowan Bypass, Ryanbury, AK 96029",
+    "salonName": "Religious Salon",
+    "business": "salon",
+    "salonAddress": "79920 Cowan Bypass, Ryanbury, AK 96029",
+    "serviceType": [
+        "Spa",
+        "Beauty"
+    ],
+    "services": {
+        "salon_service_003": "hair-styling",
+        "salon_service_004": "facial-treatment"
+    },
+    "workingHours": [
+        "Spa",
+        "Beauty"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -47.63166,
+        "longitude": -101.471367
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-429881",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

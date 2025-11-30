@@ -113,12 +113,14 @@ class BusinessServiceCache:
         if not self._cache:
             self.initialize_cache(business_name)
         # Search through all cached items
-        for cache_key, cache_data in self._cache.items():
-            business_obj = cache_data.get('business', {})
-            # Check if this business name exists in the cache data
-            if business_name in business_obj:
-                services = business_obj[business_name]
-                return services.get(service_name)
+        
+        if service_name:
+            for cache_key, cache_data in self._cache.items():
+                business_obj = cache_data.get('business', {})
+                # Check if this business name exists in the cache data
+                if business_name in business_obj:
+                    services = business_obj[business_name]
+                    return services.get(service_name)
         return None
     
     def cache_all_businesses(self, businesses_config: Dict[str, str]) -> None:

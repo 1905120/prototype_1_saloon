@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000080",
+    "ownerName": "Jennifer Hamilton",
+    "phone": "9000000080",
+    "email": "jennifer.hamilton@example.com",
+    "ownerAddress": "36380 Carter Mission Apt. 585, East Erika, MS 48534",
+    "salonName": "First Salon",
+    "business": "salon",
+    "salonAddress": "36380 Carter Mission Apt. 585, East Erika, MS 48534",
+    "serviceType": [
+        "Hair",
+        "Combined"
+    ],
+    "services": {
+        "salon_service_002": "hair-coloring",
+        "salon_service_008": "waxing"
+    },
+    "workingHours": [
+        "Hair",
+        "Combined"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 85.1901225,
+        "longitude": -153.08084
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-530099",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

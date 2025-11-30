@@ -1,0 +1,60 @@
+{
+    "clientId": "9000000038",
+    "ownerName": "Kimberly Gross",
+    "phone": "9000000038",
+    "email": "kimberly.gross@example.com",
+    "ownerAddress": "452 Johns Courts, New Frankland, DE 45362",
+    "salonName": "Factor Salon",
+    "business": "salon",
+    "salonAddress": "452 Johns Courts, New Frankland, DE 45362",
+    "serviceType": [
+        "Combined",
+        "Unisex",
+        "Beauty"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_002": "hair-coloring",
+        "salon_service_006": "pedicure",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Combined",
+        "Unisex",
+        "Beauty"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 24.9358985,
+        "longitude": -61.986902
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-694390",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

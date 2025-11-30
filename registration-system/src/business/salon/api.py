@@ -3,7 +3,7 @@ Salon API endpoints - specific operations for customers and clients
 """
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
-from typing import Dict, Any, Optional, Union, List
+from typing import Dict, Any, Optional, Union, List, Callable
 from src.core.session import SessionManager
 from src.business.salon.customer import Customer
 from src.business.salon.client import Client
@@ -22,32 +22,148 @@ customer = Customer()
 client = Client()
 # SessionManager will be initialized in route_salon_request
 
+class SessionCache_Customer:
+    """Session data object"""
+    
+    def __init__(self, session_dict: Dict[str, Any]):
+        self.id = session_dict.get("id")
+        self.name = session_dict.get("name")
+        self.email = session_dict.get("email")
+        self.phone = session_dict.get("phone")
+        self.dateOfBirth = session_dict.get("dateOfBirth")
+        self.address = session_dict.get("address")
+        self.location = session_dict.get("location")
+        self.version = session_dict.get("version")
+        self.action = session_dict.get("action")
+        self.approvalStatus = session_dict.get("approvalStatus")
+        self.updatedAt = session_dict.get("session_created_at")
+        self.updatedFields = session_dict.get("updatedFields")
+        self.registeredAt = session_dict.get("registeredAt")
+        self.business = session_dict.get("business")
+        self.service_type = session_dict.get("service_type")
+        self.live_record_path = session_dict.get("live_record_path")
+        self.create_schema_path = session_dict.get("create_schema_path")
+        self.session_id = session_dict.get("session_id")
+        self.entity_id = session_dict.get("entity_id")
+        self.phone = session_dict.get("phone")
+        self.operation_type = session_dict.get("operation_type") #action
+        self.operation = session_dict.get("operation") #function
+        self.operation_id = session_dict.get("operation_id") #service id for the business
+        self.latest_version_record_id = session_dict.get("latest_version_record_id")
+        self.process_context = session_dict.get("process_context")
+        
+class SessionCache_Client:
+    """Session data object"""
+    
+    def __init__(self, session_dict: Dict[str, Any]):
+        """
+        Initialize session data from dictionary
+        
+        Args:
+            session_dict: Dictionary containing session information
+        """
+        self.session_id = session_dict.get("session_id")
+        self.entity_id = session_dict.get("entity_id")
+        self.latest_version_record_id = session_dict.get("latest_version_record_id")
+
+        self.live_record_path = session_dict.get("live_record_path")
+        self.create_schema_path = session_dict.get("create_schema_path")
+        
+        self.process_context = session_dict.get("process_context")
+
+        self.id = session_dict.get("phone")
+        self.clientId = session_dict.get("phone")
+        self.ownerName = session_dict.get("ownerName")
+        self.phone = session_dict.get("phone")
+        self.email = session_dict.get("email")
+        self.ownerAddress = session_dict.get("ownerAddress")
+        self.salonName = session_dict.get("salonName")
+        self.business = session_dict.get("business")
+        self.salonAddress = session_dict.get("salonAddress")
+        self.serviceType = session_dict.get("serviceType")
+        self.services = session_dict.get("services")
+        self.workingHours = session_dict.get("workingHours")
+        self.weeklyHoliday = session_dict.get("weeklyHoliday")
+        self.location = session_dict.get("location")
+        self.isOpen = session_dict.get("isOpen")
+        self.slots = session_dict.get("slots")
+        self.licence = session_dict.get("licence")
+        self.version = session_dict.get("version")
+        self.action = session_dict.get("action")
+        self.approvalStatus = session_dict.get("approvalStatus")
+        self.updatedAt = session_dict.get("session_created_at")
+        self.updatedFields = session_dict.get("updatedFields")
+        self.registeredAt = session_dict.get("registeredAt")
+        self.operation = session_dict.get("operation") #function
+        self.operation_type = session_dict.get("operation_type") #action
+        self.process_context = session_dict.get("process_context")
+
+class SessionCache_GetCustomerSuggestion:
+    """Session data object"""
+    
+    def __init__(self, session_dict: Dict[str, Any]):
+        """
+        Initialize session data from dictionary
+        
+        Args:
+            session_dict: Dictionary containing session information
+        """
+        self.session_id = session_dict.get("session_id")
+        self.phone = session_dict.get("phone")
+        self.action = session_dict.get("action")
+        self.business = session_dict.get("business")
+        self.operation = session_dict.get("operation")
+        self.operation_type = session_dict.get("operation_type") #action
+        self.operation_id = session_dict.get("operation_id")
+        self.id = session_dict.get("id")
+        self.process_context = session_dict.get("process_context")
+        self.location = session_dict.get("location")
+        self.request_time = session_dict.get("request_time")
+
 class MainRequestClient(BaseModel):
     """Main request payload"""
     model_config = {"extra": "allow"}
+    clientId: Optional[str] = None
+    ownerName: str
     phone: str
+    email: Optional[str] = None
+    ownerAddress: Optional[str] = None
+    salonName: Optional[str] = None
     business: str
-    name: Optional[str] = None
-    updates: Optional[Dict[str, Any]] = None
-    owner_name: Optional[str] = None
-    salon_name: Optional[str] = None
-    working_hours: Optional[list] = None
-    data: Optional[Dict[str, Any]] = None  # Request data storage
-    service_type: str
-    operation_id: Optional[str] = None
+    salonAddress: Optional[str] = None
+    serviceType: Optional[list] = []
+    workingHours: Optional[list] = []
+    weeklyHoliday: Optional[list] = []
+    location: Optional[dict] = {}
+    isOpen: Optional[bool] = None
+    slots: Optional[dict] = {}
+    licence: Optional[str] = None
+    version: Optional[int] =  None
     action: Optional[str] = None
+    approvalStatus: Optional[str] = None
+    updatedAt: Optional[str] = None
+    updatedFields: Optional[None] = []
+    registeredAt: Optional[str] = ""
+    services:Optional[dict] = []
+
+    #system defined
+    handler_func: Callable[..., Any] = None
+    action: Optional[str] = None
+    session_id: Optional[str] = None
+    latest_version: Optional[int] = None
+    latest_version_record_id: Optional[str] = None
 
 class MainRequestCustomer(BaseModel):
     """Main request payload"""
     model_config = {"extra": "allow"}
-    _id: Optional[str] = None
+    customer_id: Optional[str] = None
     name: Optional[str] = None
     email: Optional[str] = None
     phone: str
     dateOfBirth: Optional[str] = None
     address: Optional[str] = None
-    locations: Optional[List[str]] = None
-    version: Optional[list] = None
+    location: Optional[dict] = None
+    version: Optional[int] = None
     action: Optional[str] = None
     approvalStatus: Optional[str] = None
     updatedAt: Optional[str] = None
@@ -56,15 +172,25 @@ class MainRequestCustomer(BaseModel):
     business: str
     service_type: str
     operation_id: Optional[str] = None
-
+    #system defined
+    handler_func: Callable[..., Any] = None
+    action: Optional[str] = None
+    session_id: Optional[str] = None
+    latest_version: Optional[int] = None
+    latest_version_record_id: Optional[str] = None
 
 class MainRequestCustomerBookingMap(BaseModel):
     """Request payload for getting customer booking map"""
     model_config = {"extra": "allow"}
     phone: str
     business: str
+
+    #system defined
+    handler_func: Callable[..., Any] = None
     action: Optional[str] = None
-    
+    latest_version_record_id : str = ""
+    location: dict = {}
+    request_time: str
 
 class SessionResponse(BaseModel):
     """Response containing session ID"""
@@ -73,6 +199,7 @@ class SessionResponse(BaseModel):
     message: str
 
 def _get_handler_function(entity_type, is_new_entity, payload):
+
     """Get handler function based on entity type and whether it's new"""
     function = None
     action = None
@@ -99,14 +226,22 @@ def _get_handler_function(entity_type, is_new_entity, payload):
             function = client.update
     elif entity_type == "SYSTEM":
         if payload.action == "get-customer_booking_map":
-            function = customer.get_customer_booking_map
-            action = payload.action
-    return function, action
+            function = customer.get_customer_suggestions
+            action = "get-customer_booking_map"
+    if action and function:
+        logger.info(f"Got handler function for action: {action}")
+    #return a updated payload
+    payload.handler_func = function
+    payload.action = action
+
+    return payload
 
 
 async def check_entity_key_in_cache(payload, entity_type, entity_context, cache_data):
+
     """Check if entity exists in cache, create if not"""
     entity_key = payload.phone
+
     if entity_key in cache_data[entity_type]:
         entity_id = cache_data[entity_type][entity_key].get("customer_id" if entity_type == "customer" else "client_id")
         logger.info(f"Entity found in cache with id: {entity_id}")
@@ -156,63 +291,54 @@ async def route_salon_request(
         
         # Handle SYSTEM entity type (e.g., get-customer_booking_map)
         if entity_type == "SYSTEM":
-            handler_func, action = _get_handler_function(entity_type, is_new_entity, payload)
-            if not handler_func:
+            payload = _get_handler_function(entity_type, is_new_entity, payload)
+            if not payload.handler_func:
                 error_msg = f"No handler found for action: {payload.action}"
                 ErrorStore.store(payload.phone, error_msg, "SYSTEM-PROCESS-ERR")
                 return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, error_msg)
             
-            logger.info(f"Got handler function for action: {action}")
+            logger.info(f"Got handler function for action: {payload.action}")
             
+            system_context = {}
             # Create a minimal context for SYSTEM operations
-            from src.core.context import CustomerContext
-            system_context = CustomerContext(business="salon")
-            system_context.phone = payload.phone
-            system_context.business = payload.business
-            system_context.session_id = str(uuid.uuid4())
+            from src.core.context import CustomerContext, ClientContext
+            system_context["customer_context"] = CustomerContext(business="salon")
+            system_context["client_context"]   = ClientContext(business="salon")
+            # system_context.phone = payload.phone
+            # system_context.business = payload.business
+            # system_context.session_id = str(uuid.uuid4())
             
             # Process through session manager
-            session_manager = SessionManager(entity_type, handler_func, system_context, payload=payload)
+            session_manager = SessionManager(entity_type, system_context, payload)
             response = await session_manager.process()
             
-            logger.info(f"Successfully routed {action} for salon - Session: {response.get('session_id')}")
+            # logger.info(f"Successfully routed {payload.action} for salon - Session: {response.get('session_id')}")
             return response
         
         # Get cache data
-        if entity_type == "customer":
+        elif entity_type == "customer":
             cache_data = entity_context.customer_manager.get_all()
             logger.info(f"Retrieved cache for {entity_type}")
+
         elif entity_type == "client":
             cache_data = entity_context.client_manager.get_all()
             logger.info(f"Retrieved cache for {entity_type}")
         
-        handler_func, action = _get_handler_function(entity_type, is_new_entity, payload)
+        payload = _get_handler_function(entity_type, is_new_entity, payload)
 
-        if entity_type in ["customer"]:
-            # Check/create entity in cache
-            await check_entity_key_in_cache(payload, entity_type, entity_context, cache_data)
-            entity_context.customer_name = getattr(payload, "name", None)
-            entity_context.email         = getattr(payload, "email", None)
-            entity_context.location      = getattr(payload, "location", None)
-            entity_context.address       = getattr(payload, "address", None)
-            entity_context.date_of_birth = getattr(payload, "dateOfBirth", None)
-
-            payload = validate_and_load_payload(action, payload)
-
-            entity_context._action       = action
+        #just a safe check whether entity cache loaded properly else initise a entity cache for the customer
+        await check_entity_key_in_cache(payload, entity_type, entity_context, cache_data)
             
-        if not handler_func:
+        if not payload.handler_func:
             error_msg = f"No handler found for action: {entity_context._action}"
             ErrorStore.store(payload.phone, error_msg, "SYSTEM-PROCESS-ERR")
             return ErrorResponse.build("SYSTEM-PROCESS-ERR", error_msg, error_msg)
         
-        logger.info(f"Got handler function for action: {action}")
-        
         # Process through session manager
-        session_manager = SessionManager(entity_type, handler_func, entity_context, payload=payload)
+        session_manager = SessionManager(entity_type, entity_context, payload)
         response = await session_manager.process()
         
-        logger.info(f"Successfully routed {action} for salon - Session: {response.get('session_id')}")
+        logger.info(f"Successfully routed {payload.action} for salon - Session: {response.get('session_id')}")
         return response
     
     except Exception as e:

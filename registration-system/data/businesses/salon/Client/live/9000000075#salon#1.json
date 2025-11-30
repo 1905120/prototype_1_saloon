@@ -1,0 +1,54 @@
+{
+    "clientId": "9000000075",
+    "ownerName": "Edward Hayes",
+    "phone": "9000000075",
+    "email": "edward.hayes@example.com",
+    "ownerAddress": "61252 Howard Spurs Apt. 463, Edwardsshire, KS 16922",
+    "salonName": "Prevent Salon",
+    "business": "salon",
+    "salonAddress": "61252 Howard Spurs Apt. 463, Edwardsshire, KS 16922",
+    "serviceType": [
+        "Beauty"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_008": "waxing"
+    },
+    "workingHours": [
+        "Beauty"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 33.1423395,
+        "longitude": -130.686377
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-957879",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

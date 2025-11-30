@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000084",
+    "ownerName": "Mary Lambert",
+    "phone": "9000000084",
+    "email": "mary.lambert@example.com",
+    "ownerAddress": "16669 Megan Meadow Suite 738, South Douglasborough, NY 54100",
+    "salonName": "Bag Salon",
+    "business": "salon",
+    "salonAddress": "16669 Megan Meadow Suite 738, South Douglasborough, NY 54100",
+    "serviceType": [
+        "Unisex",
+        "Hair"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Unisex",
+        "Hair"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 61.0446205,
+        "longitude": 49.644118
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-920094",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

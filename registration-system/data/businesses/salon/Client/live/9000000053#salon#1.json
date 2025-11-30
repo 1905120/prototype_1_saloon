@@ -1,0 +1,54 @@
+{
+    "clientId": "9000000053",
+    "ownerName": "Bill Russell",
+    "phone": "9000000053",
+    "email": "bill.russell@example.com",
+    "ownerAddress": "PSC 3940, Box 2184, APO AP 97045",
+    "salonName": "Reach Salon",
+    "business": "salon",
+    "salonAddress": "PSC 3940, Box 2184, APO AP 97045",
+    "serviceType": [
+        "Unisex"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Unisex"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -87.264681,
+        "longitude": -72.560636
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-346143",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

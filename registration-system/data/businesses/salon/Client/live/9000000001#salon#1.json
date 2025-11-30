@@ -1,0 +1,60 @@
+{
+    "clientId": "9000000001",
+    "ownerName": "Christine Williams DDS",
+    "phone": "9000000001",
+    "email": "christine.williams.dds@example.com",
+    "ownerAddress": "153 Hartman Turnpike Suite 749, New Jamesmouth, NY 58655",
+    "salonName": "Spring Salon",
+    "business": "salon",
+    "salonAddress": "153 Hartman Turnpike Suite 749, New Jamesmouth, NY 58655",
+    "serviceType": [
+        "Salon",
+        "Unisex",
+        "Spa"
+    ],
+    "services": {
+        "salon_service_002": "hair-coloring",
+        "salon_service_006": "pedicure",
+        "salon_service_008": "waxing",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Salon",
+        "Unisex",
+        "Spa"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -87.035284,
+        "longitude": 159.153433
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-481252",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

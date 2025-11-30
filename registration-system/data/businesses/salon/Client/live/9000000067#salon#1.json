@@ -1,0 +1,58 @@
+{
+    "clientId": "9000000067",
+    "ownerName": "Patricia Bennett",
+    "phone": "9000000067",
+    "email": "patricia.bennett@example.com",
+    "ownerAddress": "369 Vasquez Squares Apt. 760, South Annetteville, ME 56664",
+    "salonName": "Professional Salon",
+    "business": "salon",
+    "salonAddress": "369 Vasquez Squares Apt. 760, South Annetteville, ME 56664",
+    "serviceType": [
+        "Salon",
+        "Unisex"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_002": "hair-coloring",
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Salon",
+        "Unisex"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 20.13131,
+        "longitude": 175.815281
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-231394",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

@@ -1,0 +1,59 @@
+{
+    "clientId": "9000000097",
+    "ownerName": "Jennifer Martin",
+    "phone": "9000000097",
+    "email": "jennifer.martin@example.com",
+    "ownerAddress": "1167 Macdonald Ways, Lake Jennifer, MS 84067",
+    "salonName": "Toward Salon",
+    "business": "salon",
+    "salonAddress": "1167 Macdonald Ways, Lake Jennifer, MS 84067",
+    "serviceType": [
+        "Hair",
+        "Beauty",
+        "Salon"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_003": "hair-styling",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Hair",
+        "Beauty",
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 82.9797935,
+        "longitude": -141.501795
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-512404",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

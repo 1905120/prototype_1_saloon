@@ -1,0 +1,22 @@
+{
+  "business_numbers": {
+    "salon_main": {
+      "phone_id": "your_phone_id",
+      "phone_number": "+1-555-0100",
+      "display_name": "Salon Booking",
+      "business_name": "Salon Booking System",
+      "description": "Book salon appointments online",
+      "status": "active",
+      "created_at": "2025-11-26T05:36:10.525315",
+      "features": [
+        "booking",
+        "search",
+        "notifications"
+      ],
+      "supported_languages": [
+        "en"
+      ],
+      "timezone": "UTC"
+    }
+  }
+}

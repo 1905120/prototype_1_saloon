@@ -1,0 +1,56 @@
+{
+    "clientId": "9000000011",
+    "ownerName": "James Suarez",
+    "phone": "9000000011",
+    "email": "james.suarez@example.com",
+    "ownerAddress": "772 Sanchez Orchard, Pruittmouth, NM 36860",
+    "salonName": "Can Salon",
+    "business": "salon",
+    "salonAddress": "772 Sanchez Orchard, Pruittmouth, NM 36860",
+    "serviceType": [
+        "Salon"
+    ],
+    "services": {
+        "salon_service_002": "hair-coloring",
+        "salon_service_008": "waxing",
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -44.7157665,
+        "longitude": -72.544025
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-860300",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

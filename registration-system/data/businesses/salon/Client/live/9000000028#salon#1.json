@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000028",
+    "ownerName": "Jeffrey Taylor",
+    "phone": "9000000028",
+    "email": "jeffrey.taylor@example.com",
+    "ownerAddress": "5932 Melissa Harbors Suite 072, Laurenside, IN 57899",
+    "salonName": "Responsibility Salon",
+    "business": "salon",
+    "salonAddress": "5932 Melissa Harbors Suite 072, Laurenside, IN 57899",
+    "serviceType": [
+        "Hair",
+        "Spa"
+    ],
+    "services": {
+        "salon_service_006": "pedicure",
+        "salon_service_008": "waxing",
+        "salon_service_004": "facial-treatment"
+    },
+    "workingHours": [
+        "Hair",
+        "Spa"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -82.5299705,
+        "longitude": 100.864647
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-107010",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

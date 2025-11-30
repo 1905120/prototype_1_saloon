@@ -1,0 +1,54 @@
+{
+    "clientId": "9000000064",
+    "ownerName": "Ralph Carroll",
+    "phone": "9000000064",
+    "email": "ralph.carroll@example.com",
+    "ownerAddress": "794 Adams Brooks Suite 779, Mendozaland, CT 69567",
+    "salonName": "Human Salon",
+    "business": "salon",
+    "salonAddress": "794 Adams Brooks Suite 779, Mendozaland, CT 69567",
+    "serviceType": [
+        "Hair"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Hair"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 53.2057945,
+        "longitude": 41.882514
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-82873",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

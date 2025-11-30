@@ -1,0 +1,55 @@
+{
+    "clientId": "9000000020",
+    "ownerName": "David Bryant",
+    "phone": "9000000020",
+    "email": "david.bryant@example.com",
+    "ownerAddress": "921 Bonilla Shore Suite 760, South Ashleyville, WI 94848",
+    "salonName": "Different Salon",
+    "business": "salon",
+    "salonAddress": "921 Bonilla Shore Suite 760, South Ashleyville, WI 94848",
+    "serviceType": [
+        "Unisex"
+    ],
+    "services": {
+        "salon_service_002": "hair-coloring",
+        "salon_service_008": "waxing",
+        "salon_service_004": "facial-treatment"
+    },
+    "workingHours": [
+        "Unisex"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -43.324054,
+        "longitude": 117.551313
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-382407",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

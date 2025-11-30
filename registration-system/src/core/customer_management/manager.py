@@ -109,11 +109,6 @@ class CustomerManager:
         """Initialize manager"""
         self._cache = None
         self._business = business
-        self.customer_name = None
-        self.email = None
-        self.address = None
-        self.location = None
-        self.date_of_birth = None
         
     def load_customer_metadata(self) -> None:
         """

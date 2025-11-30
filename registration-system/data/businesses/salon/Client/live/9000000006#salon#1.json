@@ -1,0 +1,59 @@
+{
+    "clientId": "9000000006",
+    "ownerName": "Alexis Murphy",
+    "phone": "9000000006",
+    "email": "alexis.murphy@example.com",
+    "ownerAddress": "05621 Michael Street Suite 963, Coxville, MD 41174",
+    "salonName": "School Salon",
+    "business": "salon",
+    "salonAddress": "05621 Michael Street Suite 963, Coxville, MD 41174",
+    "serviceType": [
+        "Spa",
+        "Unisex",
+        "Hair"
+    ],
+    "services": {
+        "salon_service_002": "hair-coloring",
+        "salon_service_008": "waxing",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Spa",
+        "Unisex",
+        "Hair"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -25.351624,
+        "longitude": 133.090828
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-616720",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

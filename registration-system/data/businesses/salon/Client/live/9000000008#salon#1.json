@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000008",
+    "ownerName": "Michael Martin",
+    "phone": "9000000008",
+    "email": "michael.martin@example.com",
+    "ownerAddress": "42198 Gary Fort, East Jennifer, WV 75059",
+    "salonName": "Dinner Salon",
+    "business": "salon",
+    "salonAddress": "42198 Gary Fort, East Jennifer, WV 75059",
+    "serviceType": [
+        "Beauty",
+        "Salon"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_003": "hair-styling",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Beauty",
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 55.4182095,
+        "longitude": 129.679591
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-44754",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

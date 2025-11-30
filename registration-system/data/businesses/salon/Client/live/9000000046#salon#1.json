@@ -1,0 +1,59 @@
+{
+    "clientId": "9000000046",
+    "ownerName": "Megan Evans",
+    "phone": "9000000046",
+    "email": "megan.evans@example.com",
+    "ownerAddress": "6621 Jennifer Plains Apt. 609, Maryfort, LA 28238",
+    "salonName": "Real Salon",
+    "business": "salon",
+    "salonAddress": "6621 Jennifer Plains Apt. 609, Maryfort, LA 28238",
+    "serviceType": [
+        "Combined",
+        "Spa",
+        "Salon"
+    ],
+    "services": {
+        "salon_service_003": "hair-styling",
+        "salon_service_008": "waxing",
+        "salon_service_006": "pedicure"
+    },
+    "workingHours": [
+        "Combined",
+        "Spa",
+        "Salon"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 74.8391465,
+        "longitude": 168.514117
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-512524",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

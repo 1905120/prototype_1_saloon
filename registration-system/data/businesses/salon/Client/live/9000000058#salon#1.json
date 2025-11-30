@@ -1,0 +1,59 @@
+{
+    "clientId": "9000000058",
+    "ownerName": "Alexandra Lozano",
+    "phone": "9000000058",
+    "email": "alexandra.lozano@example.com",
+    "ownerAddress": "196 Theresa Streets, South Mallorymouth, ND 98395",
+    "salonName": "Situation Salon",
+    "business": "salon",
+    "salonAddress": "196 Theresa Streets, South Mallorymouth, ND 98395",
+    "serviceType": [
+        "Unisex",
+        "Hair",
+        "Beauty"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_006": "pedicure",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Unisex",
+        "Hair",
+        "Beauty"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -7.9906755,
+        "longitude": -96.200813
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-67393",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

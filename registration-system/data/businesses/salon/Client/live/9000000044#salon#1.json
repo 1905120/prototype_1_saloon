@@ -1,0 +1,54 @@
+{
+    "clientId": "9000000044",
+    "ownerName": "Michael Johnson",
+    "phone": "9000000044",
+    "email": "michael.johnson@example.com",
+    "ownerAddress": "194 Thompson Plaza Apt. 381, Ericbury, WY 91830",
+    "salonName": "Serve Salon",
+    "business": "salon",
+    "salonAddress": "194 Thompson Plaza Apt. 381, Ericbury, WY 91830",
+    "serviceType": [
+        "Hair"
+    ],
+    "services": {
+        "salon_service_004": "facial-treatment",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Hair"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": 10.4768015,
+        "longitude": 168.562291
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-282592",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

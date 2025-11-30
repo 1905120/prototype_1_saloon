@@ -1,0 +1,59 @@
+{
+    "clientId": "9000000000",
+    "ownerName": "Joshua French",
+    "phone": "9000000000",
+    "email": "joshua.french@example.com",
+    "ownerAddress": "5231 Andrew Hill Apt. 093, Brianfort, ID 33170",
+    "salonName": "Huge Salon",
+    "business": "salon",
+    "salonAddress": "5231 Andrew Hill Apt. 093, Brianfort, ID 33170",
+    "serviceType": [
+        "Salon",
+        "Spa"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_002": "hair-coloring",
+        "salon_service_006": "pedicure",
+        "salon_service_004": "facial-treatment",
+        "salon_service_003": "hair-styling"
+    },
+    "workingHours": [
+        "Salon",
+        "Spa"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -49.8600275,
+        "longitude": 36.757567
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-302479",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

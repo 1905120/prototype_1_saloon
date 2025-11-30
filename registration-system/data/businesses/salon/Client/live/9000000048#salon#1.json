@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000048",
+    "ownerName": "Renee Macdonald",
+    "phone": "9000000048",
+    "email": "renee.macdonald@example.com",
+    "ownerAddress": "5623 Olson Ports Suite 640, Millerchester, CA 23193",
+    "salonName": "How Salon",
+    "business": "salon",
+    "salonAddress": "5623 Olson Ports Suite 640, Millerchester, CA 23193",
+    "serviceType": [
+        "Combined"
+    ],
+    "services": {
+        "salon_service_003": "hair-styling",
+        "salon_service_004": "facial-treatment",
+        "salon_service_002": "hair-coloring",
+        "salon_service_006": "pedicure",
+        "salon_service_008": "waxing"
+    },
+    "workingHours": [
+        "Combined"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -10.5944465,
+        "longitude": -48.69314
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-36766",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

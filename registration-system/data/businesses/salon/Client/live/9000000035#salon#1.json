@@ -1,0 +1,57 @@
+{
+    "clientId": "9000000035",
+    "ownerName": "David Murphy",
+    "phone": "9000000035",
+    "email": "david.murphy@example.com",
+    "ownerAddress": "617 Mccullough Village, Garyview, ID 70385",
+    "salonName": "Generation Salon",
+    "business": "salon",
+    "salonAddress": "617 Mccullough Village, Garyview, ID 70385",
+    "serviceType": [
+        "Hair",
+        "Combined"
+    ],
+    "services": {
+        "salon_service_008": "waxing",
+        "salon_service_006": "pedicure",
+        "salon_service_002": "hair-coloring"
+    },
+    "workingHours": [
+        "Hair",
+        "Combined"
+    ],
+    "weeklyHoliday": [
+        "Sunday"
+    ],
+    "location": {
+        "latitude": -33.5725005,
+        "longitude": 40.091826
+    },
+    "isOpen": true,
+    "slots": {
+        "slotId": {
+            "slot1": {
+                "slotTime": "10:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot2": {
+                "slotTime": "11:00",
+                "isAvailable": true,
+                "askBeforeBooking": false
+            },
+            "slot3": {
+                "slotTime": "12:00",
+                "isAvailable": false,
+                "askBeforeBooking": false
+            }
+        }
+    },
+    "licence": "LIC-894980",
+    "version": 1,
+    "action": "create-client",
+    "approvalStatus": null,
+    "updatedAt": null,
+    "updatedFields": null,
+    "registeredAt": null
+}

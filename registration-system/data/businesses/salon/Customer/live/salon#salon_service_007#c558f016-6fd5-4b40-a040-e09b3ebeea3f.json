@@ -1,0 +1,21 @@
+{
+    "id": null,
+    "name": "test47",
+    "email": null,
+    "phone": "4498131335",
+    "dateOfBirth": null,
+    "address": null,
+    "location": {
+        "latitude": -31.216158,
+        "longitude": 27.066103
+    },
+    "version": 1,
+    "action": "create",
+    "approvalStatus": null,
+    "updatedAt": "2025-11-30T16:24:49.593309",
+    "updatedFields": null,
+    "registeredAt": null,
+    "business": "salon",
+    "service_type": null,
+    "operation_id": "salon_service_007"
+}
